@@ -46,15 +46,14 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lblLogo" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                           <Component id="txtKeyword" min="-2" pref="273" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="1">
-                          <EmptySpace max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
                           <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="669" max="32767" attributes="0"/>
@@ -97,12 +96,14 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtKeyword">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="txtKeyword.font"/>
             <Property name="text" type="java.lang.String" resourceKey="txtKeyword.text"/>
             <Property name="name" type="java.lang.String" value="txtKeyword" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnSearch">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="btnSearch.font"/>
             <Property name="text" type="java.lang.String" resourceKey="btnSearch.text"/>
             <Property name="name" type="java.lang.String" value="btnSearch" noResource="true"/>
           </Properties>

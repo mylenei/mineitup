@@ -67,9 +67,11 @@ public class MineItUpResult extends JFrame {
             }
         });
 
+        txtKeyword.setFont(resourceMap.getFont("txtKeyword.font")); // NOI18N
         txtKeyword.setText(resourceMap.getString("txtKeyword.text")); // NOI18N
         txtKeyword.setName("txtKeyword"); // NOI18N
 
+        btnSearch.setFont(resourceMap.getFont("btnSearch.font")); // NOI18N
         btnSearch.setText(resourceMap.getString("btnSearch.text")); // NOI18N
         btnSearch.setName("btnSearch"); // NOI18N
 
@@ -80,14 +82,13 @@ public class MineItUpResult extends JFrame {
             .addGroup(resultPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblLogo)
-                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(resultPanelLayout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, resultPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSearch)
-                        .addGap(97, 97, 97)))
+                    .addGroup(resultPanelLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(btnSearch)))
                 .addContainerGap(669, Short.MAX_VALUE))
         );
         resultPanelLayout.setVerticalGroup(
