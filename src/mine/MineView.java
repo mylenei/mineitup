@@ -15,6 +15,8 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * The application's main frame.
@@ -231,9 +233,20 @@ public class MineView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        this.getFrame().hide();
-        MineItUpResult res = new MineItUpResult(txtKeyword.getText().trim());
-        res.show();
+        //this.getFrame().hide();
+        //JOptionPane.showMessageDialog(null, "searching....");
+        //MineResult result = new MineResult();
+        //ImageIcon image = new ImageIcon("//mineItUp2.JPG");
+        //this.lblLogo.setIcon(image);
+        this.lblLogo.setLocation(20, 10);
+        this.txtKeyword.setLocation(700,50);
+        this.btnSearch.setLocation(830,100);
+
+        this.mainPanel.repaint();
+        
+        //this.getFrame().getContentPane().add(result);
+        //MineItUpResult res = new MineItUpResult(txtKeyword.getText().trim());
+        //res.show();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
