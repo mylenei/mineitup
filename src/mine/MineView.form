@@ -5,6 +5,7 @@
     <Container class="javax.swing.JPanel" name="mainPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" resourceKey="mainPanel.background"/>
+        <Property name="font" type="java.awt.Font" resourceKey="mainPanel.font"/>
         <Property name="name" type="java.lang.String" value="mainPanel" noResource="true"/>
       </Properties>
 
@@ -47,6 +48,8 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnSearch">
           <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="btnSearch.background"/>
+            <Property name="font" type="java.awt.Font" resourceKey="btnSearch.font"/>
             <Property name="text" type="java.lang.String" resourceKey="btnSearch.text"/>
             <Property name="name" type="java.lang.String" value="btnSearch" noResource="true"/>
           </Properties>
@@ -63,6 +66,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtKeyword">
           <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="txtKeyword.font"/>
             <Property name="text" type="java.lang.String" resourceKey="txtKeyword.text"/>
             <Property name="name" type="java.lang.String" value="txtKeyword" noResource="true"/>
           </Properties>

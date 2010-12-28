@@ -117,8 +117,11 @@ public class MineView extends FrameView {
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mine.MineApp.class).getContext().getResourceMap(MineView.class);
         mainPanel.setBackground(resourceMap.getColor("mainPanel.background")); // NOI18N
+        mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
 
+        btnSearch.setBackground(resourceMap.getColor("btnSearch.background")); // NOI18N
+        btnSearch.setFont(resourceMap.getFont("btnSearch.font")); // NOI18N
         btnSearch.setText(resourceMap.getString("btnSearch.text")); // NOI18N
         btnSearch.setName("btnSearch"); // NOI18N
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +134,7 @@ public class MineView extends FrameView {
         lblLogo.setText(resourceMap.getString("lblLogo.text")); // NOI18N
         lblLogo.setName("lblLogo"); // NOI18N
 
+        txtKeyword.setFont(resourceMap.getFont("txtKeyword.font")); // NOI18N
         txtKeyword.setText(resourceMap.getString("txtKeyword.text")); // NOI18N
         txtKeyword.setName("txtKeyword"); // NOI18N
 
