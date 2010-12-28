@@ -132,6 +132,7 @@ public class MineView extends FrameView {
             }
         });
 
+        lblLogo.setBackground(resourceMap.getColor("lblLogo.background")); // NOI18N
         lblLogo.setIcon(resourceMap.getIcon("lblLogo.icon")); // NOI18N
         lblLogo.setText(resourceMap.getString("lblLogo.text")); // NOI18N
         lblLogo.setName("lblLogo"); // NOI18N
@@ -155,7 +156,7 @@ public class MineView extends FrameView {
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(292, 292, 292)
                         .addComponent(lblLogo)))
-                .addContainerGap(261, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +167,7 @@ public class MineView extends FrameView {
                 .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch)
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -205,11 +206,11 @@ public class MineView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 1161, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 1211, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 991, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1041, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -237,13 +238,12 @@ public class MineView extends FrameView {
         //JOptionPane.showMessageDialog(null, "searching....");
         //MineResult result = new MineResult();
         //ImageIcon image = new ImageIcon("//mineItUp2.JPG");
-        //this.lblLogo.setIcon(image);
+        //Icon icon = Icon.class.cast(image);
+        //this.lblLogo.setIcon(icon);
         this.lblLogo.setLocation(20, 10);
         this.txtKeyword.setLocation(700,50);
-        this.btnSearch.setLocation(830,100);
-
-        this.mainPanel.repaint();
-        
+        this.btnSearch.setLocation(820,100);
+        this.mainPanel.repaint();        
         //this.getFrame().getContentPane().add(result);
         //MineItUpResult res = new MineItUpResult(txtKeyword.getText().trim());
         //res.show();
