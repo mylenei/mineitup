@@ -26,11 +26,13 @@ public class MineItUpResult extends JFrame {
     public MineItUpResult() {
         keyword = "";
         initComponents();
+        
     }
 
     public MineItUpResult(String keyword) {
         this.keyword = keyword;
         initComponents();
+        txtKeyword.setText(keyword);
     }
 
     /** This method is called from within the constructor to
