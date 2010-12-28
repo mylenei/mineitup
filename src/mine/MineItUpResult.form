@@ -107,6 +107,9 @@
             <Property name="text" type="java.lang.String" resourceKey="btnSearch.text"/>
             <Property name="name" type="java.lang.String" value="btnSearch" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnSearch.setMnemonic(&apos;S&apos;);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

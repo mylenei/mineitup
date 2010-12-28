@@ -74,6 +74,7 @@ public class MineItUpResult extends JFrame {
         btnSearch.setFont(resourceMap.getFont("btnSearch.font")); // NOI18N
         btnSearch.setText(resourceMap.getString("btnSearch.text")); // NOI18N
         btnSearch.setName("btnSearch"); // NOI18N
+        btnSearch.setMnemonic('S');
 
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);

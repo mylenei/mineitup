@@ -89,6 +89,9 @@
         </Property>
         <Property name="name" type="java.lang.String" value="closeButton" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="closeButton.setMnemonic(&apos;C&apos;);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="appTitleLabel">
       <Properties>
