@@ -15,6 +15,8 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * The application's main frame.
@@ -147,15 +149,15 @@ public class MineView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(441, 441, 441)
+                        .addGap(297, 297, 297)
+                        .addComponent(lblLogo))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(445, 445, 445)
                         .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(563, 563, 563)
-                        .addComponent(btnSearch))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(292, 292, 292)
-                        .addComponent(lblLogo)))
-                .addContainerGap(311, Short.MAX_VALUE))
+                        .addGap(564, 564, 564)
+                        .addComponent(btnSearch)))
+                .addContainerGap(306, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,9 +166,9 @@ public class MineView extends FrameView {
                 .addComponent(lblLogo)
                 .addGap(18, 18, 18)
                 .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -235,20 +237,26 @@ public class MineView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        //this.getFrame().hide();
-        //JOptionPane.showMessageDialog(null, "searching....");
-        //MineResult result = new MineResult();
-        //ImageIcon image = new ImageIcon("//mineItUp2.JPG");
-        //Icon icon = Icon.class.cast(image);
-        //this.lblLogo.setIcon(icon);
+        ClassLoader cldr = this.getClass().getClassLoader();
+        java.net.URL imageURL   = cldr.getResource("mine/resources/mineItUp2.JPG");
+        ImageIcon icon = new ImageIcon(imageURL);
+        this.lblLogo.setIcon(icon);
         this.lblLogo.setLocation(20, 10);
         this.txtKeyword.setLocation(700,50);
         this.btnSearch.setLocation(820,100);
-        this.mainPanel.repaint();        
-        //this.getFrame().getContentPane().add(result);
-        //MineItUpResult res = new MineItUpResult(txtKeyword.getText().trim());
-        //res.show();
+        this.mainPanel.repaint();
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    /** Returns an ImageIcon, or null if the path was invalid. */
+    protected ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
