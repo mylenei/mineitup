@@ -15,8 +15,6 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  * The application's main frame.
@@ -126,6 +124,7 @@ public class MineView extends FrameView {
         btnSearch.setFont(resourceMap.getFont("btnSearch.font")); // NOI18N
         btnSearch.setText(resourceMap.getString("btnSearch.text")); // NOI18N
         btnSearch.setName("btnSearch"); // NOI18N
+        btnSearch.setMnemonic('S');
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -174,6 +173,7 @@ public class MineView extends FrameView {
 
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
+        fileMenu.setMnemonic('F');
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mine.MineApp.class).getContext().getActionMap(MineView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
@@ -184,6 +184,7 @@ public class MineView extends FrameView {
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
+        helpMenu.setMnemonic('H');
 
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
