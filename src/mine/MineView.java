@@ -16,13 +16,12 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  * The application's main frame.
  */
 public class MineView extends FrameView {
-    
+    private boolean searched = false;
     public MineView(SingleFrameApplication app) {
         super(app);
 
@@ -237,26 +236,19 @@ public class MineView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        ClassLoader cldr = this.getClass().getClassLoader();
-        java.net.URL imageURL   = cldr.getResource("mine/resources/mineItUp2.JPG");
-        ImageIcon icon = new ImageIcon(imageURL);
-        this.lblLogo.setIcon(icon);
-        this.lblLogo.setLocation(20, 10);
-        this.txtKeyword.setLocation(700,50);
-        this.btnSearch.setLocation(820,100);
-        this.mainPanel.repaint();
-    }//GEN-LAST:event_btnSearchActionPerformed
-
-    /** Returns an ImageIcon, or null if the path was invalid. */
-    protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
+        if(!searched) {
+            ClassLoader cldr = this.getClass().getClassLoader();
+            java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
+            ImageIcon icon = new ImageIcon(imageURL);
+            this.lblLogo.setIcon(icon);
+            this.lblLogo.setSize(icon.getIconWidth(), icon.getIconHeight());
+            this.lblLogo.setLocation(10, 10);
+            this.txtKeyword.setLocation(300,30);
+            this.btnSearch.setLocation(420,70);
+            this.mainPanel.repaint();
+            searched = true;
         }
-    }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
