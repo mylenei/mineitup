@@ -248,6 +248,9 @@ public class MineView extends FrameView {
             this.mainPanel.repaint();
             searched = true;
         }
+        if(!txtKeyword.getText().equals("")) {
+            //mine it nah
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
