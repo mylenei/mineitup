@@ -249,7 +249,8 @@ public class MineView extends FrameView {
             searched = true;
         }
         if(!txtKeyword.getText().equals("")) {
-            //mine it nah
+            MineIt mine = new MineIt();
+            mine.searchKeywordOccurence(null);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
