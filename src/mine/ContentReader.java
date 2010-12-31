@@ -41,7 +41,7 @@ public class ContentReader {
                 HWPFDocument doc = new HWPFDocument(fs);
                 WordExtractor we = new WordExtractor(doc);
                 String[] paragraphs = we.getParagraphText();
-                System.out.println( "Word Document has " + paragraphs.length + " paragraphs" );
+                //System.out.println( "Word Document has " + paragraphs.length + " paragraphs" );
                 for( int i=0; i<paragraphs.length; i++ ) {
                     //System.out.println( "Length:"+paragraphs[i].length());
                     //System.out.println(paragraphs[i]);
@@ -131,7 +131,7 @@ public class ContentReader {
                         switch(cell.getCellType()) {
                             case XSSFCell.CELL_TYPE_NUMERIC:
                                 content += cell.getNumericCellValue();
-                                System.out.println(cell.getNumericCellValue() + "\t"); break;
+                                //System.out.println(cell.getNumericCellValue() + "\t"); break;
                             case XSSFCell.CELL_TYPE_STRING:
                                 String tmp = cell.getRichStringCellValue().getString();
                                 content += tmp;
@@ -165,7 +165,7 @@ public class ContentReader {
                     switch(cell.getCellType()) {
                         case HSSFCell.CELL_TYPE_NUMERIC:
                             content += cell.getNumericCellValue();
-                            System.out.println(cell.getNumericCellValue() + "\t"); break;
+                            //System.out.println(cell.getNumericCellValue() + "\t"); break;
                         case HSSFCell.CELL_TYPE_STRING:
                             String tmp = cell.getRichStringCellValue().getString();
                             //System.out.println(tmp + "\t");

@@ -250,7 +250,7 @@ public class MineView extends FrameView {
         }
         if(!txtKeyword.getText().equals("")) {
             MineIt mine = new MineIt();
-            mine.searchKeywordOccurence(null);
+            mine.searchKeywordOccurence(txtKeyword.getText());
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 

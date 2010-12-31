@@ -5,29 +5,40 @@
 
 package mine;
 
-import java.io.*;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  *
  * @author wella
  */
 public class MineIt {
-    private String keyword;
+    //private String keyword;
     private ContentReader reader;
-    
+    //private LinkedList<String> listResult;
+
     public MineIt() {
-        keyword = "";
+      //  keyword = "";
         reader = new ContentReader();
+      //  listResult = new LinkedList<String>();
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
+//    public LinkedList<String> getListResult() {
+//        return listResult;
+//    }
+//
+//    public void setListResult(LinkedList<String> listResult) {
+//        this.listResult = listResult;
+//    }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+//    public String getKeyword() {
+//        return keyword;
+//    }
+//
+//    public void setKeyword(String keyword) {
+//        this.keyword = keyword;
+//    }
 
     public ContentReader getReader() {
         return reader;
@@ -39,28 +50,21 @@ public class MineIt {
 
     public void searchKeywordOccurence(String keyword) {
         Connection con = null;
+        
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
               System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              // our SQL SELECT query.
-              // if you only need a few columns, specify them by name instead of using "*"
               String query = "SELECT * FROM sources";
-
-              // create the java statement
-              Statement st = con.createStatement();
-
-              // execute the query, and get a java resultset
-              ResultSet rs = st.executeQuery(query);
-
-              // iterate through the java resultset
-              while (rs.next())
+              Statement st = con.createStatement(); //creates the java statement
+              ResultSet rs = st.executeQuery(query); // execute the query, and get a java resultset
+              while (rs.next()) // iterate through the java resultset
               {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
-                // print the results
-                System.out.format("%s, %s\n", id, path);
+                processKeywordInFile(keyword, path); //if mo-return siya ug true, store the id somewhere for data mining algo to be used
+                //System.out.format("%s, %s\n", id, path);
               }
               st.close();
               con.close();
@@ -71,6 +75,62 @@ public class MineIt {
         }
         catch (Exception e){
           e.printStackTrace();
+        }
+    }
+
+    //returns false if the file given by path does not contain keyword, true otherwise
+    private LinkedList<String> processKeywordInFile(String keyword, String path) {
+        boolean ok = false;
+        LinkedList<String> listResult = new LinkedList<String>();
+        String content;
+        
+        if(path.endsWith(".doc") || path.endsWith(".docx")) {
+            content = reader.readDocFile(path);
+            //System.out.println(content);
+            if(content.contains(keyword)) {
+                ok = true;
+                listResult.add(path);
+                System.out.println(content);
+            }
+        }
+        else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
+            content = reader.readExcelFile(path);
+            //System.out.println(content);
+            if(content.contains(keyword)) {
+                ok = true;
+                listResult.add(path);
+                System.out.println(content);
+            }
+        }
+        else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
+            content = reader.readPPTFile(path);
+            //System.out.println(content);
+            if(content.contains(keyword)) {
+                ok = true;
+                listResult.add(path);
+                System.out.println(content);
+            }
+        }
+        else if(path.endsWith(".pdf")) {
+            content = reader.readPDFFile(path);
+            //System.out.println(content);
+            if(content.contains(keyword)) {
+                ok = true;
+                listResult.add(path);
+                System.out.println(content);
+            }
+        }
+        displayListResult(listResult);
+        return listResult;
+    }
+
+    //displays all the elements in the listResult
+    public void displayListResult(LinkedList<String> listResult) {
+        System.out.println("Search Results");
+        ListIterator<String> iterator = listResult.listIterator();
+        while(iterator.hasNext()) {
+            System.out.println("oh yeah!");
+            System.out.println(iterator.next());
         }
     }
 }
