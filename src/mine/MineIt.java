@@ -14,12 +14,11 @@ import java.util.ListIterator;
  * @author wella
  */
 public class MineIt {
-    //private String keyword;
+    private String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor"};
     private ContentReader reader;
     private LinkedList<String> listResult;
 
     public MineIt() {
-      //  keyword = "";
         reader = new ContentReader();
         listResult = new LinkedList<String>();
     }
@@ -32,14 +31,6 @@ public class MineIt {
         this.listResult = listResult;
     }
 
-//    public String getKeyword() {
-//        return keyword;
-//    }
-//
-//    public void setKeyword(String keyword) {
-//        this.keyword = keyword;
-//    }
-
     public ContentReader getReader() {
         return reader;
     }
@@ -49,8 +40,7 @@ public class MineIt {
     }
 
     public void searchKeywordOccurence(String keyword) {
-        Connection con = null;
-        
+        Connection con = null;   
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
@@ -64,7 +54,6 @@ public class MineIt {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
                 processKeywordInFile(keyword, path); //if mo-return siya ug true, store the id somewhere for data mining algo to be used
-                //System.out.format("%s, %s\n", id, path);
               }
               st.close();
               con.close();
@@ -85,7 +74,6 @@ public class MineIt {
         boolean ok = false;
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
-            //System.out.println(content);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
@@ -94,7 +82,6 @@ public class MineIt {
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
-            //System.out.println(content);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
@@ -103,7 +90,6 @@ public class MineIt {
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
-            //System.out.println(content);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
@@ -112,14 +98,12 @@ public class MineIt {
         }
         else if(path.endsWith(".pdf")) {
             content = reader.readPDFFile(path);
-            //System.out.println(content);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
                 ok = true;
             }
         }
-        
         return ok;
     }
 
@@ -129,7 +113,6 @@ public class MineIt {
         System.out.println("Search Results");
         ListIterator<String> iterator = listResult.listIterator();
         while(iterator.hasNext()) {
-            System.out.println("oh yeah!");
             list += iterator.next() + "\n";
             System.out.println(list);
         }
