@@ -41,10 +41,7 @@ public class ContentReader {
                 HWPFDocument doc = new HWPFDocument(fs);
                 WordExtractor we = new WordExtractor(doc);
                 String[] paragraphs = we.getParagraphText();
-                //System.out.println( "Word Document has " + paragraphs.length + " paragraphs" );
                 for( int i=0; i<paragraphs.length; i++ ) {
-                    //System.out.println( "Length:"+paragraphs[i].length());
-                    //System.out.println(paragraphs[i]);
                     content += paragraphs[i];
                 }
             }
@@ -67,8 +64,7 @@ public class ContentReader {
             File file = new File(filename);
             PDDocument pdd = new PDDocument();
             pdd = PDDocument.load(file);
-            PDFTextStripper pts=new PDFTextStripper();
-            //System.out.println("Here:" + pts.getText(pdd));
+            PDFTextStripper pts = new PDFTextStripper();
             content += pts.getText(pdd);
             pdd.close();
         }
@@ -87,14 +83,11 @@ public class ContentReader {
                 fs = new POIFSFileSystem(stream);
                 HSLFSlideShow ppt = new HSLFSlideShow(fs);
                 PowerPointExtractor powerPointExtractor = new PowerPointExtractor(ppt);
-                //System.out.println("Text: " + powerPointExtractor.getText());
-                //System.out.println("Notes: " + powerPointExtractor.getNotes());
                 content += powerPointExtractor.getText(true, true);
             }
             else if(filename.endsWith(".pptx")) {
                 XSLFSlideShow ppt = new XSLFSlideShow(filename);
                 XSLFPowerPointExtractor powerPointExtractor = new XSLFPowerPointExtractor(ppt);
-                //System.out.println("Notes & Text: " + powerPointExtractor.getText(true, true));
                 content += powerPointExtractor.getText(true, true);
             }
         }
@@ -132,11 +125,9 @@ public class ContentReader {
                             case XSSFCell.CELL_TYPE_NUMERIC:
                                 content += cell.getNumericCellValue();
                                 break;
-                               // System.out.println(cell.getNumericCellValue() + "\t"); break;
                             case XSSFCell.CELL_TYPE_STRING:
                                 String tmp = cell.getRichStringCellValue().getString();
                                 content += tmp;
-                                //System.out.println(tmp + "\t");
                                 break;
                             default: System.out.println("Type not supported"); break;
                         }
@@ -166,10 +157,9 @@ public class ContentReader {
                     switch(cell.getCellType()) {
                         case HSSFCell.CELL_TYPE_NUMERIC:
                             content += cell.getNumericCellValue();
-                            //System.out.println(cell.getNumericCellValue() + "\t"); break;
+                            break;
                         case HSSFCell.CELL_TYPE_STRING:
                             String tmp = cell.getRichStringCellValue().getString();
-                            //System.out.println(tmp + "\t");
                             content += tmp;
                             break;
                         default: System.out.println("Type not supported"); break;
