@@ -16,21 +16,21 @@ import java.util.ListIterator;
 public class MineIt {
     //private String keyword;
     private ContentReader reader;
-    //private LinkedList<String> listResult;
+    private LinkedList<String> listResult;
 
     public MineIt() {
       //  keyword = "";
         reader = new ContentReader();
-      //  listResult = new LinkedList<String>();
+        listResult = new LinkedList<String>();
     }
 
-//    public LinkedList<String> getListResult() {
-//        return listResult;
-//    }
-//
-//    public void setListResult(LinkedList<String> listResult) {
-//        this.listResult = listResult;
-//    }
+    public LinkedList<String> getListResult() {
+        return listResult;
+    }
+
+    public void setListResult(LinkedList<String> listResult) {
+        this.listResult = listResult;
+    }
 
 //    public String getKeyword() {
 //        return keyword;
@@ -76,61 +76,64 @@ public class MineIt {
         catch (Exception e){
           e.printStackTrace();
         }
+        displayListResult(listResult);
     }
 
     //returns false if the file given by path does not contain keyword, true otherwise
-    private LinkedList<String> processKeywordInFile(String keyword, String path) {
-        boolean ok = false;
-        LinkedList<String> listResult = new LinkedList<String>();
+    private boolean processKeywordInFile(String keyword, String path) {
         String content;
-        
+        boolean ok = false;
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
             //System.out.println(content);
-            if(content.contains(keyword)) {
-                ok = true;
+            if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
+                ok = true;
             }
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
             //System.out.println(content);
-            if(content.contains(keyword)) {
-                ok = true;
+            if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
+                ok = true;
             }
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
             //System.out.println(content);
-            if(content.contains(keyword)) {
-                ok = true;
+            if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
+                ok = true;
             }
         }
         else if(path.endsWith(".pdf")) {
             content = reader.readPDFFile(path);
             //System.out.println(content);
-            if(content.contains(keyword)) {
-                ok = true;
+            if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
                 System.out.println(content);
+                ok = true;
             }
         }
-        displayListResult(listResult);
-        return listResult;
+        
+        return ok;
     }
 
     //displays all the elements in the listResult
     public void displayListResult(LinkedList<String> listResult) {
+        String list = "";
         System.out.println("Search Results");
         ListIterator<String> iterator = listResult.listIterator();
         while(iterator.hasNext()) {
             System.out.println("oh yeah!");
-            System.out.println(iterator.next());
+            list += iterator.next() + "\n";
+            System.out.println(list);
         }
+        String res = listResult.size() + " Search Result(s)";
+        javax.swing.JOptionPane.showMessageDialog(null, list, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 }
