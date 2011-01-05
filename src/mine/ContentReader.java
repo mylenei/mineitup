@@ -131,7 +131,8 @@ public class ContentReader {
                         switch(cell.getCellType()) {
                             case XSSFCell.CELL_TYPE_NUMERIC:
                                 content += cell.getNumericCellValue();
-                                //System.out.println(cell.getNumericCellValue() + "\t"); break;
+                                break;
+                               // System.out.println(cell.getNumericCellValue() + "\t"); break;
                             case XSSFCell.CELL_TYPE_STRING:
                                 String tmp = cell.getRichStringCellValue().getString();
                                 content += tmp;
