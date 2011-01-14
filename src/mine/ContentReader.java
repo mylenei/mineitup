@@ -176,7 +176,7 @@ public class ContentReader {
      }
 
      //Extract plaintext strings from a web page
-     public String WebtextReader(String source) {
+     public String readWebText(String source) {
         String text = "";
         StringExtractor sExt = new StringExtractor(source);
         try {

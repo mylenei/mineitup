@@ -105,6 +105,7 @@ public class MineIt {
     private boolean processKeywordInFile(String keyword, String path) {
         String content;
         boolean ok = false;
+
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
             if(content.toLowerCase().contains(keyword)) {
@@ -129,7 +130,7 @@ public class MineIt {
                 ok = true;
             }
         }
-        else if(path.endsWith(".pdf")) {
+        else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
@@ -137,6 +138,15 @@ public class MineIt {
                 ok = true;
             }
         }
+        else if(path.startsWith("http")) {
+            content = reader.readWebText(path);
+            if(content.toLowerCase().contains(keyword)) {
+                listResult.add(path);
+                System.out.println(content);
+                ok = true;
+            }
+        }
+
         return ok;
     }
 
