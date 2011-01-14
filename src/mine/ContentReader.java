@@ -22,7 +22,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
-
+import org.htmlparser.parserapplications.*;
+import org.htmlparser.util.ParserException;
 import java.io.*;
 import java.util.*;
 /**
@@ -173,4 +174,20 @@ public class ContentReader {
         }
          return content;
      }
+
+     //Extract plaintext strings from a web page
+     public String WebtextReader(String source) {
+        String text = "";
+        StringExtractor sExt = new StringExtractor(source);
+        try {
+            System.out.println(sExt.extractStrings(false));
+        }
+        catch(ParserException p) {
+            p.printStackTrace();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return text;
+    }
 }

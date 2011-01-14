@@ -14,15 +14,26 @@ import java.util.ListIterator;
  * @author wella
  */
 public class MineIt {
-    private String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor"};
+    private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor"};
+
+    private String keyword;
     private ContentReader reader;
     private LinkedList<String> listResult;
 
     public MineIt() {
+        keyword = "";
         reader = new ContentReader();
         listResult = new LinkedList<String>();
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    
     public LinkedList<String> getListResult() {
         return listResult;
     }
@@ -37,6 +48,28 @@ public class MineIt {
 
     public void setReader(ContentReader reader) {
         this.reader = reader;
+    }
+
+    //cleanup keyword so that articles and other garbage symbols would not be considered.
+    //cleaning up double and more whitespaces between words.
+    private String cleanUpKeyword(String keyword) {
+        String cleanedKeyword = "";
+        int wspace = 0;
+
+        for(int i = 0; i < keyword.length(); i++) {
+            if(wspace <= 1) {
+                if(Character.isWhitespace(keyword.charAt(i))) {
+                    wspace++;
+                }
+            }
+            else {
+                wspace = 0;
+            }
+        }
+        
+        //process keyword for further clean up. :)
+        this.setKeyword(keyword);
+        return cleanedKeyword;
     }
 
     public void searchKeywordOccurence(String keyword) {
