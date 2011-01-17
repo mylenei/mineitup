@@ -124,6 +124,7 @@ public class MineView extends FrameView {
         btnSearch.setBackground(resourceMap.getColor("btnSearch.background")); // NOI18N
         btnSearch.setFont(resourceMap.getFont("btnSearch.font")); // NOI18N
         btnSearch.setText(resourceMap.getString("btnSearch.text")); // NOI18N
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSearch.setName("btnSearch"); // NOI18N
         btnSearch.setMnemonic('S');
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -140,6 +141,11 @@ public class MineView extends FrameView {
         txtKeyword.setFont(resourceMap.getFont("txtKeyword.font")); // NOI18N
         txtKeyword.setText(resourceMap.getString("txtKeyword.text")); // NOI18N
         txtKeyword.setName("txtKeyword"); // NOI18N
+        txtKeyword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtKeywordKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -253,6 +259,13 @@ public class MineView extends FrameView {
             mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
         }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            btnSearch.doClick();
+        }
+    }//GEN-LAST:event_txtKeywordKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
