@@ -14,8 +14,9 @@ import java.util.ListIterator;
  * @author wella
  */
 public class MineIt {
-    private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor"};
-
+    private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
+    private String[] extractedTexts = new String[8]; //8 pa kabuok ang sulod sa db
+    private int ctr = 0;
     private String keyword;
     private ContentReader reader;
     private LinkedList<String> listResult;
@@ -26,6 +27,14 @@ public class MineIt {
         listResult = new LinkedList<String>();
     }
 
+    public String[] getExtractedTexts() {
+        return extractedTexts;
+    }
+
+    public void setExtractedTexts(String[] extractedTexts) {
+        this.extractedTexts = extractedTexts;
+    }
+
     public String getKeyword() {
         return keyword;
     }
@@ -33,7 +42,7 @@ public class MineIt {
     public void setKeyword(String keyword) {
         this.keyword = keyword;
     }
-    
+
     public LinkedList<String> getListResult() {
         return listResult;
     }
@@ -66,14 +75,14 @@ public class MineIt {
                 wspace = 0;
             }
         }
-        
+
         //process keyword for further clean up. :)
         this.setKeyword(keyword);
         return cleanedKeyword;
     }
 
     public void searchKeywordOccurence(String keyword) {
-        Connection con = null;   
+        Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
@@ -110,6 +119,7 @@ public class MineIt {
             content = reader.readDocFile(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
+                extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
@@ -118,6 +128,7 @@ public class MineIt {
             content = reader.readExcelFile(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
+                extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
@@ -126,6 +137,7 @@ public class MineIt {
             content = reader.readPPTFile(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
+                extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
@@ -134,6 +146,7 @@ public class MineIt {
             content = reader.readPDFFile(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
+                extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
@@ -142,6 +155,7 @@ public class MineIt {
             content = reader.readWebText(path);
             if(content.toLowerCase().contains(keyword)) {
                 listResult.add(path);
+                extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
