@@ -334,9 +334,18 @@ public class MineView extends FrameView {
         if(!txtKeyword.getText().equals("")) {
             MineIt mine = new MineIt();
             mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
+            displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void displayResults(String[] texts) {
+        String result = "";
+        for(String s : texts) {
+            result += s + "\n";
+        }
+        txtResult.setText(result);
+    }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
         // TODO add your handling code here:
