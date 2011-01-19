@@ -180,7 +180,8 @@ public class ContentReader {
         String text = "";
         StringExtractor sExt = new StringExtractor(source);
         try {
-            System.out.println(sExt.extractStrings(false));
+            text = sExt.extractStrings(false);
+            System.out.println(text);
         }
         catch(ParserException p) {
             p.printStackTrace();
