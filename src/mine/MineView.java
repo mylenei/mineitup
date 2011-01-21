@@ -318,6 +318,7 @@ public class MineView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        btnSearch.setEnabled(false);
         if(!searched) {
             ClassLoader cldr = this.getClass().getClassLoader();
             java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
@@ -336,6 +337,7 @@ public class MineView extends FrameView {
             displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
         }
+        btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void displayResults(String[] texts) {

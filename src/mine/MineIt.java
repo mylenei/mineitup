@@ -8,13 +8,16 @@ package mine;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Arrays;
+import rita.wordnet.*;
 
 /**
  *
  * @author wella
  */
 public class MineIt {
-    private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
+    //private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
+    private String[] synonymsOfKeyword;
     private String[] extractedTexts = new String[8]; //8 pa kabuok ang sulod sa db
     private int ctr = 0;
     private String keyword;
@@ -59,26 +62,13 @@ public class MineIt {
         this.reader = reader;
     }
 
-    //cleanup keyword so that articles and other garbage symbols would not be considered.
-    //cleaning up double and more whitespaces between words.
-    private String cleanUpKeyword(String keyword) {
-        String cleanedKeyword = "";
-        int wspace = 0;
-
-        for(int i = 0; i < keyword.length(); i++) {
-            if(wspace <= 1) {
-                if(Character.isWhitespace(keyword.charAt(i))) {
-                    wspace++;
-                }
-            }
-            else {
-                wspace = 0;
-            }
+    private String[] getSynonymsOfKeyword(String keyword) {
+        RiWordnet wordnet = new RiWordnet(null);
+        String[] synonyms = wordnet.getAllSynsets(keyword, wordnet.getBestPos(keyword));
+        if (synonyms == null || synonyms.length < 0) {
+            synonyms[0] = "***";
         }
-
-        //process keyword for further clean up. :)
-        this.setKeyword(keyword);
-        return cleanedKeyword;
+        return synonyms;
     }
 
     public void searchKeywordOccurence(String keyword) {
@@ -93,7 +83,7 @@ public class MineIt {
               ResultSet rs = st.executeQuery(query); // execute the query, and get a java resultset
               while (rs.next()) // iterate through the java resultset
               {
-                int id = rs.getInt("id");
+                //int id = rs.getInt("id");
                 String path = rs.getString("path");
                 processKeywordInFile(keyword, path); //if mo-return siya ug true, store the id somewhere for data mining algo to be used
               }
@@ -110,14 +100,25 @@ public class MineIt {
         displayListResult(listResult);
     }
 
+    private boolean contentContainsKeywords(String content, String[] keywords) {
+        boolean ok = false;
+        for(String s: keywords) {
+            if(content.toLowerCase().contains(s)) {
+                ok = true;
+                break;
+            }
+            System.out.println(s);
+        }
+        return ok;
+    }
     //returns false if the file given by path does not contain keyword, true otherwise
     private boolean processKeywordInFile(String keyword, String path) {
         String content;
         boolean ok = false;
-
+        synonymsOfKeyword = getSynonymsOfKeyword(keyword);
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
-            if(content.toLowerCase().contains(keyword)) {
+            if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 extractedTexts[ctr++] = content;
                 System.out.println(content);
@@ -126,7 +127,7 @@ public class MineIt {
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
-            if(content.toLowerCase().contains(keyword)) {
+            if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 extractedTexts[ctr++] = content;
                 System.out.println(content);
@@ -135,7 +136,7 @@ public class MineIt {
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
-            if(content.toLowerCase().contains(keyword)) {
+            if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 extractedTexts[ctr++] = content;
                 System.out.println(content);
@@ -144,7 +145,7 @@ public class MineIt {
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
-            if(content.toLowerCase().contains(keyword)) {
+            if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 extractedTexts[ctr++] = content;
                 System.out.println(content);
@@ -153,14 +154,13 @@ public class MineIt {
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
-            if(content.toLowerCase().contains(keyword)) {
+            if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 extractedTexts[ctr++] = content;
                 System.out.println(content);
                 ok = true;
             }
         }
-
         return ok;
     }
 
