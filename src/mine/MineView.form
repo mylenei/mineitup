@@ -12,7 +12,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jScrollPane1" alignment="0" pref="1302" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="jScrollPane1" pref="1292" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -160,8 +163,7 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="293" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="304" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -178,9 +180,9 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JEditorPane" name="editorpaneResult">
+                        <Component class="javax.swing.JTextPane" name="txtPaneResult">
                           <Properties>
-                            <Property name="name" type="java.lang.String" value="editorpaneResult" noResource="true"/>
+                            <Property name="name" type="java.lang.String" value="txtPaneResult" noResource="true"/>
                           </Properties>
                         </Component>
                       </SubComponents>

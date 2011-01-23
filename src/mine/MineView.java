@@ -110,7 +110,7 @@ public class MineView extends FrameView {
         btnSearch = new javax.swing.JButton();
         resultPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        editorpaneResult = new javax.swing.JEditorPane();
+        txtPaneResult = new javax.swing.JTextPane();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -195,8 +195,8 @@ public class MineView extends FrameView {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        editorpaneResult.setName("editorpaneResult"); // NOI18N
-        jScrollPane2.setViewportView(editorpaneResult);
+        txtPaneResult.setName("txtPaneResult"); // NOI18N
+        jScrollPane2.setViewportView(txtPaneResult);
 
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
@@ -210,8 +210,7 @@ public class MineView extends FrameView {
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -242,7 +241,9 @@ public class MineView extends FrameView {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1302, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1292, Short.MAX_VALUE)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,11 +339,11 @@ public class MineView extends FrameView {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void displayResults(String[] texts) {
-        String result = "";
+        String result = "y";
         for(String s : texts) {
             result += s + "\n";
         }
-        editorpaneResult.setText(result);
+        txtPaneResult.setText(result);
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
@@ -354,7 +355,6 @@ public class MineView extends FrameView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
-    private javax.swing.JEditorPane editorpaneResult;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -368,6 +368,7 @@ public class MineView extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JTextField txtKeyword;
+    private javax.swing.JTextPane txtPaneResult;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;
