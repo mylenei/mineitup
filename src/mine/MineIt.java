@@ -65,7 +65,7 @@ public class MineIt {
         RiWordnet wordnet = new RiWordnet(null);
         String[] synonyms;
         if(wordnet.exists(keyword)) {
-            synonyms = wordnet.getAllSynsets(keyword, wordnet.getBestPos(keyword));
+            synonyms = wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword)); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
         }
         else{
             synonyms = new String[1];
