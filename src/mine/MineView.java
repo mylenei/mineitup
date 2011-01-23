@@ -110,7 +110,7 @@ public class MineView extends FrameView {
         btnSearch = new javax.swing.JButton();
         resultPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtResult = new javax.swing.JTextArea();
+        editorpaneResult = new javax.swing.JEditorPane();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -195,11 +195,8 @@ public class MineView extends FrameView {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        txtResult.setColumns(20);
-        txtResult.setEditable(false);
-        txtResult.setRows(5);
-        txtResult.setName("txtResult"); // NOI18N
-        jScrollPane2.setViewportView(txtResult);
+        editorpaneResult.setName("editorpaneResult"); // NOI18N
+        jScrollPane2.setViewportView(editorpaneResult);
 
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
@@ -207,8 +204,8 @@ public class MineView extends FrameView {
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1229, Short.MAX_VALUE)
+                .addContainerGap())
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,7 +342,7 @@ public class MineView extends FrameView {
         for(String s : texts) {
             result += s + "\n";
         }
-        txtResult.setText(result);
+        editorpaneResult.setText(result);
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
@@ -357,6 +354,7 @@ public class MineView extends FrameView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JEditorPane editorpaneResult;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -370,7 +368,6 @@ public class MineView extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JTextField txtKeyword;
-    private javax.swing.JTextArea txtResult;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;

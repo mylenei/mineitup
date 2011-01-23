@@ -8,7 +8,6 @@ package mine;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Arrays;
 import rita.wordnet.*;
 
 /**
@@ -64,13 +63,17 @@ public class MineIt {
 
     private String[] getSynonymsOfKeyword(String keyword) {
         RiWordnet wordnet = new RiWordnet(null);
-        String[] synonyms = wordnet.getAllSynsets(keyword, wordnet.getBestPos(keyword));
-        if (synonyms == null || synonyms.length < 0) {
-            synonyms[0] = "***";
+        String[] synonyms;
+        if(wordnet.exists(keyword)) {
+            synonyms = wordnet.getAllSynsets(keyword, wordnet.getBestPos(keyword));
+        }
+        else{
+            synonyms = new String[1];
+            synonyms[0] = keyword;
         }
         return synonyms;
     }
-
+    
     public void searchKeywordOccurence(String keyword) {
         Connection con = null;
         try {
@@ -99,7 +102,6 @@ public class MineIt {
         }
         displayListResult(listResult);
     }
-
     private boolean contentContainsKeywords(String content, String[] keywords) {
         boolean ok = false;
         for(String s: keywords) {
@@ -163,7 +165,6 @@ public class MineIt {
         }
         return ok;
     }
-
     //displays all the elements in the listResult
     public void displayListResult(LinkedList<String> listResult) {
         String list = "";
