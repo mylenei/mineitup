@@ -8,6 +8,7 @@ package mine;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Vector;
 import rita.wordnet.*;
 
 /**
@@ -16,8 +17,10 @@ import rita.wordnet.*;
  */
 public class MineIt {
     //private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
-    private String[] synonymsOfKeyword;
-    private String[] extractedTexts = new String[8]; //8 pa kabuok ang sulod sa db
+    //private String[] synonymsOfKeyword;
+    private Vector<String> synonymsOfKeyword = new Vector<String>(5);
+    //private String[] extractedTexts = new String[14]; //8 pa kabuok ang sulod sa db
+    private Vector<String> extractedTexts = new Vector<String>(10);
     private int ctr = 0;
     private String keyword;
     private ContentReader reader;
@@ -29,13 +32,45 @@ public class MineIt {
         listResult = new LinkedList<String>();
     }
 
-    public String[] getExtractedTexts() {
+    public Vector<String> getExtractedTexts() {
         return extractedTexts;
     }
 
-    public void setExtractedTexts(String[] extractedTexts) {
+    public void setExtractedTexts(Vector<String> extractedTexts) {
         this.extractedTexts = extractedTexts;
     }
+
+    public Vector<String> getSynonymsOfKeyword() {
+        return synonymsOfKeyword;
+    }
+
+    public void setSynonymsOfKeyword(Vector<String> synonymsOfKeyword) {
+        this.synonymsOfKeyword = synonymsOfKeyword;
+    }
+
+    public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
+        //this.synonymsOfKeyword = synonymsOfKeyword;
+        for(String s: synonymsOfKeyword) {
+            this.synonymsOfKeyword.add(s);
+        }
+    }
+
+//    public String[] getSynonymsOfKeyword() {
+//        return synonymsOfKeyword;
+//    }
+//
+//    public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
+//        this.synonymsOfKeyword = synonymsOfKeyword;
+//    }
+
+    
+//    public String[] getExtractedTexts() {
+//        return extractedTexts;
+//    }
+//
+//    public void setExtractedTexts(String[] extractedTexts) {
+//        this.extractedTexts = extractedTexts;
+//    }
 
     public String getKeyword() {
         return keyword;
@@ -61,7 +96,7 @@ public class MineIt {
         this.reader = reader;
     }
 
-    private String[] getSynonymsOfKeyword(String keyword) {
+    private String[] getRelatedWords(String keyword) {
         RiWordnet wordnet = new RiWordnet(null);
         String[] synonyms;
         if(wordnet.exists(keyword)) {
@@ -102,7 +137,7 @@ public class MineIt {
         }
         displayListResult(listResult);
     }
-    private boolean contentContainsKeywords(String content, String[] keywords) {
+    private boolean contentContainsKeywords(String content, Vector<String> keywords) {
         boolean ok = false;
         for(String s: keywords) {
             if(content.toLowerCase().contains(s)) {
@@ -117,12 +152,13 @@ public class MineIt {
     private boolean processKeywordInFile(String keyword, String path) {
         String content;
         boolean ok = false;
-        synonymsOfKeyword = getSynonymsOfKeyword(keyword);
+        this.setSynonymsOfKeyword(getRelatedWords(keyword));
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
             if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
-                extractedTexts[ctr++] = content;
+                //extractedTexts[ctr++] = content;
+                extractedTexts.add(content);
                 System.out.println(content);
                 ok = true;
             }
@@ -131,7 +167,8 @@ public class MineIt {
             content = reader.readExcelFile(path);
             if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
-                extractedTexts[ctr++] = content;
+                //extractedTexts[ctr++] = content;
+                extractedTexts.add(content);
                 System.out.println(content);
                 ok = true;
             }
@@ -140,7 +177,8 @@ public class MineIt {
             content = reader.readPPTFile(path);
             if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
-                extractedTexts[ctr++] = content;
+                //extractedTexts[ctr++] = content;
+                extractedTexts.add(content);
                 System.out.println(content);
                 ok = true;
             }
@@ -149,7 +187,8 @@ public class MineIt {
             content = reader.readPDFFile(path);
             if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
-                extractedTexts[ctr++] = content;
+                //extractedTexts[ctr++] = content;
+                extractedTexts.add(content);
                 System.out.println(content);
                 ok = true;
             }
@@ -158,7 +197,8 @@ public class MineIt {
             content = reader.readWebText(path);
             if(contentContainsKeywords(content, synonymsOfKeyword)) {
                 listResult.add(path);
-                extractedTexts[ctr++] = content;
+                //extractedTexts[ctr++] = content;
+                extractedTexts.add(content);
                 System.out.println(content);
                 ok = true;
             }

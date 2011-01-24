@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.text.*;
 import java.awt.Color;
+import java.util.Vector;
 
 /**
  * The application's main frame.
@@ -339,14 +340,17 @@ public class MineView extends FrameView {
             mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
             displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
-            highlight(txtPaneResult, "character");
+            Vector<String> pattern = mine.getSynonymsOfKeyword();
+            pattern.add(txtKeyword.getText());
+            
+            highlight(txtPaneResult, pattern);
         }
         // Highlight the occurrences of the word "public"
         
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void displayResults(String[] texts) {
+    private void displayResults(Vector<String> texts) {
         String result = "y";
         for(String s : texts) {
             result += s + "\n";
@@ -377,6 +381,28 @@ public class MineView extends FrameView {
                 // Create highlighter using private painter and apply around pattern
                 hilite.addHighlight(pos, pos+pattern.length(), myHighlightPainter);
                 pos += pattern.length();
+            }
+        } catch (BadLocationException e) {
+        }
+    }
+
+     public void highlight(JTextComponent textComp, Vector<String> pattern) {
+        // First remove all old highlights
+        removeHighlights(textComp);
+
+        try {
+            Highlighter hilite = textComp.getHighlighter();
+            Document doc = textComp.getDocument();
+            String text = doc.getText(0, doc.getLength());
+            int pos = 0;
+
+            // Search for pattern
+            for(String p : pattern) {
+                while ((pos = text.indexOf(p, pos)) >= 0) {
+                    // Create highlighter using private painter and apply around pattern
+                    hilite.addHighlight(pos, pos+p.length(), myHighlightPainter);
+                    pos += p.length();
+                }
             }
         } catch (BadLocationException e) {
         }
