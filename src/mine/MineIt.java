@@ -6,6 +6,7 @@
 package mine;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Vector;
@@ -49,10 +50,7 @@ public class MineIt {
     }
 
     public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
-        //this.synonymsOfKeyword = synonymsOfKeyword;
-        for(String s: synonymsOfKeyword) {
-            this.synonymsOfKeyword.add(s);
-        }
+        this.synonymsOfKeyword.addAll(Arrays.asList(synonymsOfKeyword));
     }
 
 //    public String[] getSynonymsOfKeyword() {
@@ -137,7 +135,7 @@ public class MineIt {
         }
         displayListResult(listResult);
     }
-    private boolean contentContainsKeywords(String content, Vector<String> keywords) {
+    private boolean contentContainsKeyword(String content, Vector<String> keywords) {
         boolean ok = false;
         for(String s: keywords) {
             if(content.toLowerCase().contains(s)) {
@@ -153,9 +151,10 @@ public class MineIt {
         String content;
         boolean ok = false;
         this.setSynonymsOfKeyword(getRelatedWords(keyword));
+        this.synonymsOfKeyword.add(keyword);
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
-            if(contentContainsKeywords(content, synonymsOfKeyword)) {
+            if(contentContainsKeyword(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
@@ -165,7 +164,7 @@ public class MineIt {
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
-            if(contentContainsKeywords(content, synonymsOfKeyword)) {
+            if(contentContainsKeyword(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
@@ -175,7 +174,7 @@ public class MineIt {
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
-            if(contentContainsKeywords(content, synonymsOfKeyword)) {
+            if(contentContainsKeyword(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
@@ -185,7 +184,7 @@ public class MineIt {
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
-            if(contentContainsKeywords(content, synonymsOfKeyword)) {
+            if(contentContainsKeyword(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
@@ -195,7 +194,7 @@ public class MineIt {
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
-            if(contentContainsKeywords(content, synonymsOfKeyword)) {
+            if(contentContainsKeyword(content, synonymsOfKeyword)) {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
