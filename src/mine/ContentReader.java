@@ -50,7 +50,6 @@ public class ContentReader {
                 XWPFDocument doc = new XWPFDocument(stream);
                 XWPFWordExtractor we = new XWPFWordExtractor(doc);
                 String text = we.getText();
-                //System.out.println(text);
                 content += text;
             }
         }
@@ -120,8 +119,6 @@ public class ContentReader {
                     Iterator cells = row.cellIterator();
                     while(cells.hasNext()) {
                         XSSFCell cell = (XSSFCell)cells.next();
-                        System.out.println();
-
                         switch(cell.getCellType()) {
                             case XSSFCell.CELL_TYPE_NUMERIC:
                                 content += cell.getNumericCellValue();
@@ -132,7 +129,6 @@ public class ContentReader {
                                 break;
                             default: System.out.println("Type not supported"); break;
                         }
-                        System.out.println();
                     }
                 }
             }
@@ -153,8 +149,6 @@ public class ContentReader {
                 Iterator cells = row.cellIterator();
                 while(cells.hasNext()) {
                     HSSFCell cell = (HSSFCell)cells.next();
-                    System.out.println();
-
                     switch(cell.getCellType()) {
                         case HSSFCell.CELL_TYPE_NUMERIC:
                             content += cell.getNumericCellValue();
@@ -165,7 +159,6 @@ public class ContentReader {
                             break;
                         default: System.out.println("Type not supported"); break;
                     }
-                    System.out.println();
                 }
             }
         }
@@ -181,7 +174,6 @@ public class ContentReader {
         StringExtractor sExt = new StringExtractor(source);
         try {
             text = sExt.extractStrings(false);
-            System.out.println(text);
         }
         catch(ParserException p) {
             p.printStackTrace();

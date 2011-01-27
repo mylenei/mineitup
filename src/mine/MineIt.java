@@ -137,14 +137,16 @@ public class MineIt {
     }
     private boolean contentContainsKeyword(String content, Vector<String> keywords) {
         boolean ok = false;
+        String t = "";
         for(String s: keywords) {
             if(content.toLowerCase().contains(s)) {
-           // if(rita.RiTa.contains(content, keyword, true)) {
+            //if(rita.RiTa.contains(content, keyword, true)) {
                 ok = true;
                 break;
             }
-            System.out.println(s);
+            //t += s + "\n\t";
         }
+        //javax.swing.JOptionPane.showMessageDialog(null, t, "sysnonyms", javax.swing.JOptionPane.INFORMATION_MESSAGE);
         return ok;
     }
     //returns false if the file given by path does not contain keyword, true otherwise
@@ -159,7 +161,7 @@ public class MineIt {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
-                System.out.println(content);
+                //System.out.println(content);
                 ok = true;
             }
         }
@@ -169,7 +171,7 @@ public class MineIt {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
-                System.out.println(content);
+                //System.out.println(content);
                 ok = true;
             }
         }
@@ -179,7 +181,7 @@ public class MineIt {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
-                System.out.println(content);
+                //System.out.println(content);
                 ok = true;
             }
         }
@@ -189,7 +191,7 @@ public class MineIt {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
-                System.out.println(content);
+                //System.out.println(content);
                 ok = true;
             }
         }
@@ -199,7 +201,7 @@ public class MineIt {
                 listResult.add(path);
                 //extractedTexts[ctr++] = content;
                 extractedTexts.add(content);
-                System.out.println(content);
+                //System.out.println(content);
                 ok = true;
             }
         }
