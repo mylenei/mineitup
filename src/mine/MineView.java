@@ -323,6 +323,7 @@ public class MineView extends FrameView {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         btnSearch.setEnabled(false);
+        //resetting the locations of the logo, textfield and button
         if(!searched) {
             ClassLoader cldr = this.getClass().getClassLoader();
             java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
@@ -341,12 +342,9 @@ public class MineView extends FrameView {
             displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
             Vector<String> pattern = mine.getSynonymsOfKeyword();
-            pattern.add(txtKeyword.getText());
-            
+            pattern.add(txtKeyword.getText());   
             highlight(txtPaneResult, pattern);
-        }
-        // Highlight the occurrences of the word "public"
-        
+        }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -359,7 +357,6 @@ public class MineView extends FrameView {
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
-        // TODO add your handling code here:
         if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
             btnSearch.doClick();
         }
@@ -369,13 +366,11 @@ public class MineView extends FrameView {
     public void highlight(JTextComponent textComp, String pattern) {
         // First remove all old highlights
         removeHighlights(textComp);
-
         try {
             Highlighter hilite = textComp.getHighlighter();
             Document doc = textComp.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-
             // Search for pattern
             while ((pos = text.indexOf(pattern, pos)) >= 0) {
                 // Create highlighter using private painter and apply around pattern
@@ -395,13 +390,17 @@ public class MineView extends FrameView {
             Document doc = textComp.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-
+            //rita.RiKWICker wicker = new rita.RiKWICker(null);
+           // String[] linesOfText = text.split("\r\n");
+           // wicker.addLines(linesOfText);
             // Search for pattern
             for(String p : pattern) {
                 while ((pos = text.indexOf(p, pos)) >= 0) {
-                    // Create highlighter using private painter and apply around pattern
-                    hilite.addHighlight(pos, pos+p.length(), myHighlightPainter);
-                    pos += p.length();
+                    //if(text.charAt(pos-1) == ' ' && text.charAt(pos+1) == ' ') {
+                        // Create highlighter using private painter and apply around pattern
+                        hilite.addHighlight(pos, pos+p.length(), myHighlightPainter);
+                        pos += p.length();
+                    //}
                 }
             }
         } catch (BadLocationException e) {

@@ -139,6 +139,7 @@ public class MineIt {
         boolean ok = false;
         for(String s: keywords) {
             if(content.toLowerCase().contains(s)) {
+           // if(rita.RiTa.contains(content, keyword, true)) {
                 ok = true;
                 break;
             }
