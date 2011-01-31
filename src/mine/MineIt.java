@@ -143,7 +143,7 @@ public class MineIt {
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
               System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              String query = "SELECT * FROM temp";
+              String query = "SELECT * FROM sourcePath";
               Statement st = con.createStatement(); //creates the java statement
               ResultSet rs = st.executeQuery(query); // execute the query, and get a java resultset
               while (rs.next()) // iterate through the java resultset

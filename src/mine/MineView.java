@@ -25,12 +25,15 @@ import java.util.Vector;
  */
 public class MineView extends FrameView {
     private boolean searched = false;
+    MineIt mine;
+
     // An instance of the private subclass of the default highlight painter
     Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.red);
     
     public MineView(SingleFrameApplication app) {
         super(app);
-
+        mine = new MineIt();
+        mine.extractContents();
         initComponents();
         resultPanel.setVisible(false);
         // status bar initialization - message timeout, idle icon and busy animation, etc
@@ -336,15 +339,13 @@ public class MineView extends FrameView {
             this.mainPanel.repaint();
             searched = true;
         }
-        if(!txtKeyword.getText().equals("")) {
-            MineIt mine = new MineIt();
-            mine.extractContents();
-//            mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
-//            displayResults(mine.getExtractedTexts());
-//            resultPanel.setVisible(true);
-//            Vector<String> pattern = mine.getSynonymsOfKeyword();
-//            pattern.add(txtKeyword.getText());
-//            highlight(txtPaneResult, pattern);
+        if(!txtKeyword.getText().trim().equals("")) {
+            mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase().trim());
+            displayResults(mine.getExtractedTexts());
+            resultPanel.setVisible(true);
+            Vector<String> pattern = mine.getSynonymsOfKeyword();
+            pattern.add(txtKeyword.getText());
+            highlight(txtPaneResult, pattern);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed

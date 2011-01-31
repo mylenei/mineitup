@@ -1,6 +1,241 @@
+Whatever		
+nahnahanah
+General Objectives
+To implement an offline character recognition of scanned images or texts of at most 3 font styles
+Specific Objectives
+To extract the feature points of each character samples 
+To identify characters based on features that are somewhat similar to the features humans use to identify characters 
+To create a full text representation of those scanned documents
+What is OCR
+Offline OCR, optical character recognition refers to the branch of computer science that involves reading text from paper and translating the images into a form that the computer can manipulate (for example, into ASCII codes).
+Some OCR Applications
+Indexing
+Full text retrieval
+Full text representation
+Full text representation with XML mark-up
+How OCR Works
+How OCR Works
+General Approach
+Learning
+Back propagation
+	     8 input units -> 8 hidden units -> 6 output layers
+	26 – A-Z
+	10 – 0-9
+
+An image file with the desired characters is created and a text file representing the characters in this image file.
+Learning
+Start
+Stop
+Character
+Extract feature points
+Corresponding feature points for each character
+Recognition Process
+Threshold
+An image processing technique that minimizes image noise and can convert the text as black and its background as white for easier processing.
+		
+
+
+
+
+		Before				   After
+Recognition Process
+Character Extraction
+Detection of lines of text
+Detection of connected components
+Projection upward and downward to grab dots on "i"s and "j"s
+Character Extraction
+Line Detection
+Horizontal projection
+ adjacent lines in the image having a very small number of pixels constitute a line break.
+Component Extraction
+Starting at the upper right corner of each line, remove touching intervals of black pixels from the run-length-encoded representation of the image until nothing more connected can be found. 
+Character Property Extraction
+Feature point extraction happens
+A feature point is a point of human interest in an image, a place where something happens. It could be an intersection between two lines, or it could be a corner, or it could be just a dot surrounded by space. Such points serve to help define the relationship between different strokes.
+Feature Point Extraction
+If a pixel is on, its eight neighbors are checked.
+
+
+Since each neighbor can also only be on or off, there are merely 256 possible combinations of neighborhoods.
+
+
+
+Feature Point Extraction
+Extracting feature points thus reduced to calculating a number between zero and 256 to describe a pixel's neighborhood and then comparing that number against a table of known feature points (see Table 1, "Enumeration of Possible Pixel Neighborhoods").
+Recognition Process
+Comparison of Learned & Extracted Characters
+it sums the squares of the differences between each property in the extracted character and each property in the learned character, returning a "Confidence"
+Recognition Process
+Matching Confidence
+Additional Operations on Low-Confidence Matches
+Splitting Wide Characters
+Ex.	ri -> n
+If the confidence of the left side of the split higher than before, the character is assumed to be joined, and the split remains. Otherwise, the split is rolled back.
+Merging Narrow Characters
+An "r" might be split down the middle, leaving an "l"-like figure on the left, and something incomprehensible on the right.
+If merging results a higher confidence, merging remains
+
+
+Recognition Process
+
+THANK YOU!
+References
+Eric W. Brown Character Recognition by Feature Point Extraction
+http://www.webopedia.com/TERM/O/optical_character_recognition.html
+http://iwayinfosoft.com/onlinedataentry.html 
+http://www.techfuels.com/scanner/1583-optical-character-recognition.html  
+http://www.eecs.berkeley.edu/~fateman/kathey/char_recognition.html
+http://www.ccs.neu.edu/home/feneric/charrec.html#bourbakisgumahad
+http://www.ccs.neu.edu/home/feneric/charrec.html#table1
+
+*
+*
+*
+*
+*
+
+~***~
+OFFLINE OPTICAL CHARACTER RECOGNITION WITH FEATURE POINT EXTRACTION
+
+General Objectives
+To implement an offline character recognition of scanned images or texts of at most 3 font styles
+Specific Objectives
+To extract the feature points of each character samples 
+To identify characters based on features that are somewhat similar to the features humans use to identify characters 
+To create a full text representation of those scanned documents
+What is OCR
+Offline OCR, optical character recognition refers to the branch of computer science that involves reading text from paper and translating the images into a form that the computer can manipulate (for example, into ASCII codes).
+Some OCR Applications
+Indexing
+Full text retrieval
+Full text representation
+Full text representation with XML mark-up
+How OCR Works
+How OCR Works
+General Approach
+Learning
+Back propagation
+	     8 input units -> 8 hidden units -> 6 output layers
+	26 – A-Z
+	10 – 0-9
+
+An image file with the desired characters is created and a text file representing the characters in this image file.
+Learning
+Start
+Stop
+Character
+Extract feature points
+Corresponding feature points for each character
+Recognition Process
+
+
+Threshold
+An image processing technique that minimizes image noise and can convert the text as black and its background as white for easier processing.
+		
+
+
+
+
+		Before				   After
+Recognition Process
+
+
+Character Extraction
+Detection of lines of text
+Detection of connected components
+Projection upward and downward to grab dots on "i"s and "j"s
+Character Extraction
+
+Line Detection
+Horizontal projection
+ adjacent lines in the image having a very small number of pixels constitute a line break.
+
+Component Extraction
+Starting at the upper right corner of each line, remove touching intervals of black pixels from the run-length-encoded representation of the image until nothing more connected can be found. 
+
+Character Property Extraction
+Feature point extraction happens
+A feature point is a point of human interest in an image, a place where something happens. It could be an intersection between two lines, or it could be a corner, or it could be just a dot surrounded by space. Such points serve to help define the relationship between different strokes.
+
+Feature Point Extraction
+If a pixel is on, its eight neighbors are checked.
+
+
+Since each neighbor can also only be on or off, there are merely 256 possible combinations of neighborhoods.
+
+
+
+
+
+
+
+
+Feature Point Extraction
+Extracting feature points thus reduced to calculating a number between zero and 256 to describe a pixel's neighborhood and then comparing that number against a table of known feature points (see Table 1, "Enumeration of Possible Pixel Neighborhoods").
+Recognition Process
+
+
+Comparison of Learned & Extracted Characters
+it sums the squares of the differences between each property in the extracted character and each property in the learned character, returning a "Confidence"
+Recognition Process
+
+
+Matching Confidence
+Additional Operations on Low-Confidence Matches
+Splitting Wide Characters
+Ex.	ri -> n
+If the confidence of the left side of the split higher than before, the character is assumed to be joined, and the split remains. Otherwise, the split is rolled back.
+Merging Narrow Characters
+An "r" might be split down the middle, leaving an "l"-like figure on the left, and something incomprehensible on the right.
+If merging results a higher confidence, merging remains
+
+
+
+Recognition Process
+
+
+
+
+THANK YOU!
+References
+Eric W. Brown Character Recognition by Feature Point Extraction
+http://www.webopedia.com/TERM/O/optical_character_recognition.html
+http://iwayinfosoft.com/onlinedataentry.html 
+http://www.techfuels.com/scanner/1583-optical-character-recognition.html  
+http://www.eecs.berkeley.edu/~fateman/kathey/char_recognition.html
+http://www.ccs.neu.edu/home/feneric/charrec.html#bourbakisgumahad
+http://www.ccs.neu.edu/home/feneric/charrec.html#table1
+
+
+~***~
+
+
+
+RIGHT FOOT OPERATION	THERBLIGS	LEFT HAND	OPERATION	ELEMENTS	THERBLIGS	RIGHT HAND OPERATION	TIME	LEFT FOOT OPERATION
+Hold the shovel and load the mixture to the 	“sampan”	Walk ,get and load the mixture to the “sampan”							Get the shovel	load the mixture to the “sampan”	return the shovel		
+get the metal bar	Walk and get the metal bar		get the metal bar		
+Place the metal bar to the machine	Place the metal bar to the machine		Place the metal bar to the machine		
+Pull the “sampan” towards the operator	Pull the “sampan” towards the operator		Pull the “sampan” towards the operator		
+Turn on the machine	Regulate the machine(push and pull)	Turn on and regulate the machine(push and pull)		Turn on the machine	 Regulate the machine (push and pull)		
+tap the top part of the mixture	Turn off and tap the top part of the mixture		Turn off the machine		
+Push down the stamp bar		Push down the handle bar	Push down the stamp bar and the handle bar  		Push down the handle bar		Push down the stamp bar
+Get the concrete hollow blocks (CHB-4).	Place to the curing area	Get the concrete hollow blocks(CHB-4).Place to the curing area		Get the concrete hollow blocks (CHB-4).	Place to the curing area		
+
+
+~***~
 The recognition of machine printed characters having numerous applications in various fields attracted equally numerous algorithms to do the task. However the identification of these machine printed characters faces hindrances like the noise that the image is bringing and the variation of font styles among others. This paper explores the application of feature point extraction to the problem of recognizing machine printed characters in an automated manner. Specifically, feature point extraction is used as an algorithm to identify the character under study based on its properties or feature points, not just its shape.
 
 
+~***~
+heysoulsisteraint0.01.02.03.04.0on thefirst dayof christmasheysoulsisteraint0.01.02.03.04.0on thefirst dayof christmasheysoulsisteraint0.01.02.03.04.0on thefirst dayof christmas
+~***~
+Serial No.Social Media SitesUsernameE-mailBacklinksURLKeywords/TagsExample 1http://www.folkd.com/bads928bads928@gmail.comhttp://www.folkd.com/url/webxcebu.com%2Fnews%2F37%2Fadobe-announces-business-catalysthttp://www.webxcebu.com/Example 2http://digg.com/dashawkdashawk@ymail.comhttp://digg.com/news/business/best_hiking_tents_camping_tents_in_australiahttp://www.besthikingtents.com.au/best hiking tents, hiking tents, camping tents, camping tents in australiaExample 3http://www.delicious.com/webxpress8webxpress8@gmail.comhttp://www.delicious.com/webxpress8/internet-marketing-websiteshttp://bestinternetmarketingwebsites.com/internet-marketing-websites internet-marketing best-internet-marketing1.0http://twitter.com/rinkaku91prettykaren_15@yahoo.comhttp://twitter.com/#!/rinkaku91/status/7749523984097280http://www.besthikingtents.com.au/2.0http://digg.com/rinkaku91prettykaren_15@yahoo.comhttp://digg.com/news/lifestyle/black_wolf_2_person_mantis_ii_hiking_tent_for_campinghttp://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/3.0http://stumbleupon.com/prettykaren_15prettykaren_15@yahoo.comhttp://www.stumbleupon.com/favorites/tag/camping/http://www.besthikingtents.com.au/4.0http://reddit.com/rinkaku91prettykaren_15@yahoo.comhttp://www.reddit.com/r/reddit.com/comments/ebl8z/best_hiking_tents_camping_tents_in_australia/http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/5.0http://del.icio.us/prettykaren_15prettykaren_15@yahoo.comhttp://www.delicious.com/prettykaren_15/Backpackhttp://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/6.0http://mixx.com/7.0http://mister-wong.de/8.0http://rojo.com/9.0http://folkd.com/10.0http://mister-wong.com/11.0http://indianpad.com/12.0http://a1-webmarks.com/13.0http://connotea.org/14.0http://buddymarks.com/15.0http://shoutwire.com/16.0http://simpy.com/17.0http://cloudytags.com/18.0http://givealink.org/19.0http://oldrec.com/20.0http://linkroll.com/21.0http://sitejot.com/22.0http://tweako.com/23.0http://megite.com/24.0http://saveyourlinks.com/25.0http://favoor.com/26.0http://connectedy.com/27.0http://sync2it.com/28.0http://feedmarker.com/29.0http://i89.us/30.0http://webride.org/31.0http://wikio.com/32.0http://de.lirio.us/33.0http://netvouz.com/34.0http://clipclip.org/35.0http://startaid.com/36.0http://linkroll.com/37.0http://bringr.com/38.0http://gabbr.com/39.0http://buddymarks.com/40.0http://blogs.com/41.0http://blogmarks.net/42.0http://faves.com/front43.0http://linkagogo.com/44.0http://buzka.com/45.0http://plurk.com46.0http://friendfeed.com/47.0http://startaid.com/48.0http://koolontheweb.com/49.0http://siteslike.com/50.0http://krumlr.com/51.0http://edutagger.com/52.0http://sqworl.com/53.0http://bmaccess.net/54.0http://bukmark.net/55.0http://digmypage.com/56.0http://linkarena.com/57.0http://mysitevote.com/58.0http://oyax.com/59.0http://sitejot.com/60.0http://socialogs.com/61.0http://spurl.net/62.0http://tagza.com/63.0http://totalpad.com/64.0http://43things.com/65.0http://linkfilter.net/66.0http://feedalley.com/67.0http://de.lirio.us/68.0http://fark.com/69.0http://technorati.com/70.0http://tumblr.com/71.0http://jaiku.com/72.0http://socialnetwork.in/73.0http://profilactic.com/74.0http://iminta.com/75.0http://linkedin.com/76.0http://socialurl.com/default.aspx77.0http://qype.co.uk/78.0http://twitxr.com/79.0http://viviti.com/80.0http://wink.com/81.0http://yokway.com/82.0http://vi.sualize.us/83.0http://lijit.com/84.0http://listsofbests.com/85.0http://kirtsy.com/86.0http://orkut.com87.0http://google.com/buzzmaemabulaymaemabulay@gmail.comhttp://www.google.com/buzz/100467838697992553220/jDApFbgYBBD/http-www-besthikingtents-com-au-products-25-EPEhttp://www.besthikingtents.com.au/products/25/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New/88.0http://identi.ca/89.0http://tagtooga.com/db.tag90.0http://mixx.com91.0http://delicious.com/prettykaren_15prettykaren_15@yahoo.comhttp://www.delicious.com/prettykaren_15/Backpackhttp://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/92.0https://google.com/bookmarks/lmaemabulaymaemabulay@gmail.comhttp://www.google.com/buzz/100467838697992553220/jDApFbgYBBD/http-www-besthikingtents-com-au-products-25-EPEhttp://www.besthikingtents.com.au/products/25/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New/93.0http://folkd.com94.0http://bookmarks.yahoo.com/prettykaren_15prettykaren_15@yahoo.comhttp://buzz.yahoo.com/article/1:8d17ca234375d7d488fbb6e5e09120f4:c6ada6f07fa34d6742832aa0f2b25f24/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New?usc=1http://www.besthikingtents.com.au/products/25/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New/95.0http://kwout.com/96.0http://tagz.in/97.0http://metafilter.com/98.0http://jumptags.com/99.0http://designfloat.com/100.0http://buzzflash.net/101.0http://hotklix.com/102.0http://lintasberita.com/103.0http://humsurfer.com/104.0http://yapod.com/105.0http://linkinn.com/106.0http://jackpea.com/107.0http://plime.com/108.0http://bookmarkriver.info/109.0http://fwisp.com/110.0http://socialogs.com/111.0http://moolets.com/112.0http://kwzz.com/113.0http://swik.net/114.0http://blogengage.com/115.0http://givealink.org/main/show116.0http://sinocmo.com/117.0http://shetoldme.com/118.0http://jeqq.com/119.0http://fwisp.com/120.0http://googletop.net/maemabulaymaemabulay@gmail.comhttp://www.google.com/buzz/100467838697992553220/jDApFbgYBBD/http-www-besthikingtents-com-au-products-25-EPEhttp://www.besthikingtents.com.au/products/25/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New/121.0http://pfbuzz.com/122.0http://tagged.com/123.0http://yahoo.com/prettykaren_15prettykaren_15@yahoo.comhttp://buzz.yahoo.com/article/1:8d17ca234375d7d488fbb6e5e09120f4:c6ada6f07fa34d6742832aa0f2b25f24/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New?usc=1http://www.besthikingtents.com.au/products/25/EPE-Exodus-75L-Travel-Back-Pack-Rucksack-Hiking-Bag-New/124.0http://photobucket.com/125.0https://posterous.com/126.0http://myyearbook.com/127.0http://streetmavens.com/128.0http://status.net/129.0http://flickr.com/130.0https://yammer.com/131.0http://multiply.com/prettykaren_15prettykaren_15@yahoo.comhttp://rinkaku91.multiply.com/links/item/1/Black_Wolf_2_Person_Mantis_II_Hiking_Tent_for_Campinghttp://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/132.0http://youare.com/133.0http://bebo.com/134.0http://plaxo.com/135.0http://jaiku.com/136.0http://brightkite.com/137.0http://wordpress.com/138.0http://facebook.com/pages/prettykaren_15prettykaren_15@yahoo.comhttp://www.facebook.com/l.php?u=http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/&h=9d2f6http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/139.0http://facebook.com/prettykaren_15prettykaren_15@yahoo.comhttp://www.facebook.com/l.php?u=http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/&h=9d2f6http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/140.0http://aim.com/141.0http://google.com/talk/142.0http://myspace.com/143.0http://plurk.com/144.0http://dropjack.com/145.0http://twitwall.com/146.0http://diigo.com/147.0http://www.friendster.com/prettykaren_15prettykaren_15@yahoo.comhttp://www.friendster.com/shoutoutstream.php?uid=23241685http://www.besthikingtents.com.au/products/14/Black-Wolf-2-Person-Mantis-II-Hiking-Tent-for-Camping/
+~***~
+org.htmlparser.util.ParserException: Stay the patient course. Of little worth is your ire. The page is not found.
+~***~
+org.htmlparser.util.ParserException: Cutting the wind with a knife. Bookmarking a URL. Both are ephemeral.
+~***~
+org.htmlparser.util.ParserException: The web site you seek cannot be located, but countless more exist
 ~***~
 Lessons Learned
 Lessons Learned Today
