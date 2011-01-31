@@ -340,7 +340,7 @@ public class MineView extends FrameView {
             searched = true;
         }
         if(!txtKeyword.getText().trim().equals("")) {
-            mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase().trim());
+            mine.searchKeywordOccurence(txtKeyword.getText());
             displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
             Vector<String> pattern = mine.getSynonymsOfKeyword();
