@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Vector;
 import rita.wordnet.*;
+import java.io.*;
 
 /**
  *
@@ -18,9 +19,7 @@ import rita.wordnet.*;
  */
 public class MineIt {
     //private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
-    //private String[] synonymsOfKeyword;
     private Vector<String> synonymsOfKeyword = new Vector<String>(5);
-    //private String[] extractedTexts = new String[14]; //8 pa kabuok ang sulod sa db
     private Vector<String> extractedTexts = new Vector<String>(10);
     private int ctr = 0;
     private String keyword;
@@ -52,23 +51,6 @@ public class MineIt {
     public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
         this.synonymsOfKeyword.addAll(Arrays.asList(synonymsOfKeyword));
     }
-
-//    public String[] getSynonymsOfKeyword() {
-//        return synonymsOfKeyword;
-//    }
-//
-//    public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
-//        this.synonymsOfKeyword = synonymsOfKeyword;
-//    }
-
-    
-//    public String[] getExtractedTexts() {
-//        return extractedTexts;
-//    }
-//
-//    public void setExtractedTexts(String[] extractedTexts) {
-//        this.extractedTexts = extractedTexts;
-//    }
 
     public String getKeyword() {
         return keyword;
@@ -106,7 +88,83 @@ public class MineIt {
         }
         return synonyms;
     }
-    
+
+    //should write the contents of the documents in a textfile and feed to markov model
+    public void writeToFile() {
+        FileWriter fw;
+        try {
+            fw = new FileWriter(new java.io.File("ExtractedTexts.txt"));
+            for(String s : extractedTexts) {
+               fw.write(s);
+               String marker = "\n~***~\n";
+               fw.append(marker);
+            }
+            fw.close();
+        }
+        catch(IOException e) { e.printStackTrace(); }
+        
+    }
+
+    //extract the contents to be written
+    private void extract(String path) {
+        String content;
+        if(path.endsWith(".doc") || path.endsWith(".docx")) {
+            content = reader.readDocFile(path);
+            listResult.add(path);
+            extractedTexts.add(content);
+        }
+        else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
+            content = reader.readExcelFile(path);
+            listResult.add(path);
+            extractedTexts.add(content);
+        }
+        else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
+            content = reader.readPPTFile(path);
+            listResult.add(path);
+            extractedTexts.add(content);
+        }
+        else if(path.endsWith(".pdf") && !path.startsWith("http")) {
+            content = reader.readPDFFile(path);
+            listResult.add(path);
+            extractedTexts.add(content);
+        }
+        else if(path.startsWith("http")) {
+            content = reader.readWebText(path);
+            listResult.add(path);
+            extractedTexts.add(content);
+        }
+    }
+
+    //extracting the path from the database, exract and writetoFile are called here
+    public void extractContents() {
+        Connection con = null;
+        try {
+          Class.forName("com.mysql.jdbc.Driver");
+          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
+          if(!con.isClosed()) {
+              System.out.println("Successfully connected to MySQL server using TCP/IP...");
+              String query = "SELECT * FROM temp";
+              Statement st = con.createStatement(); //creates the java statement
+              ResultSet rs = st.executeQuery(query); // execute the query, and get a java resultset
+              while (rs.next()) // iterate through the java resultset
+              {
+                //int id = rs.getInt("id");
+                String path = rs.getString("path");
+                extract(path);
+              }
+              st.close();
+              con.close();
+            }
+        }
+        catch (SQLException s){
+            System.out.println("SQL statement is not executed!");
+        }
+        catch (Exception e){
+          e.printStackTrace();
+        }
+        writeToFile();
+    }
+
     public void searchKeywordOccurence(String keyword) {
         Connection con = null;
         try {

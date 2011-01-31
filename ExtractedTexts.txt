@@ -1,0 +1,16 @@
+The recognition of machine printed characters having numerous applications in various fields attracted equally numerous algorithms to do the task. However the identification of these machine printed characters faces hindrances like the noise that the image is bringing and the variation of font styles among others. This paper explores the application of feature point extraction to the problem of recognizing machine printed characters in an automated manner. Specifically, feature point extraction is used as an algorithm to identify the character under study based on its properties or feature points, not just its shape.
+
+
+~***~
+Lessons Learned
+Lessons Learned Today
+Honesty
+Patience
+Understanding
+Lessons Learned Yesterday
+Hardwork
+Communication
+Humility
+
+
+~***~

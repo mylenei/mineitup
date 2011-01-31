@@ -338,12 +338,13 @@ public class MineView extends FrameView {
         }
         if(!txtKeyword.getText().equals("")) {
             MineIt mine = new MineIt();
-            mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
-            displayResults(mine.getExtractedTexts());
-            resultPanel.setVisible(true);
-            Vector<String> pattern = mine.getSynonymsOfKeyword();
-            pattern.add(txtKeyword.getText());   
-            highlight(txtPaneResult, pattern);
+            mine.extractContents();
+//            mine.searchKeywordOccurence(txtKeyword.getText().toLowerCase());
+//            displayResults(mine.getExtractedTexts());
+//            resultPanel.setVisible(true);
+//            Vector<String> pattern = mine.getSynonymsOfKeyword();
+//            pattern.add(txtKeyword.getText());
+//            highlight(txtPaneResult, pattern);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
