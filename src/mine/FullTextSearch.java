@@ -36,14 +36,17 @@ public class FullTextSearch {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
-              System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              String query = "SELECT * FROM sourcePath";
-              Statement st = con.createStatement();             //creates the java statement
-              ResultSet rs = st.executeQuery(query);            // execute the query, and get a java resultset
-              while (rs.next())                                 // iterate through the java resultset
+              String query = "SELECT id,extractedText, MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
+                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
+              Statement st = con.createStatement();                     //creates the java statement
+              ResultSet rs = st.executeQuery(query);                    // execute the query, and get a java resultset
+              while (rs.next())                                         // iterate through the java resultset
               {
-                String path = rs.getString("path");
-                this.extract(path);
+                int id = rs.getInt("id");
+                String path = rs.getString("extractedText");
+                System.out.println(id);
               }
               st.close();
               con.close();
