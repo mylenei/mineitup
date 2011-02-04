@@ -93,7 +93,7 @@ public class MineIt {
     public void writeToFile() {
         FileWriter fw;
         try {
-            fw = new FileWriter(new java.io.File("ExtractedTexts.txt"));
+            fw = new FileWriter(new java.io.File("src/ExtractedTexts.txt"));
             for(String s : extractedTexts) {
                fw.write(s);
                String marker = "\n~***~\n";
