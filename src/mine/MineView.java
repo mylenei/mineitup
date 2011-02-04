@@ -33,7 +33,7 @@ public class MineView extends FrameView {
     public MineView(SingleFrameApplication app) {
         super(app);
         mine = new MineIt();
-        mine.extractContents();
+        mine.populateDB();
         initComponents();
         resultPanel.setVisible(false);
         // status bar initialization - message timeout, idle icon and busy animation, etc

@@ -104,52 +104,72 @@ public class MineIt {
         
     }
 
+    private boolean storeContentsInDB(int id, String content) {
+        boolean ok = false;
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
+            Statement statement = conn.createStatement();
+            String sql = "UPDATE datasources SET extractedText = \'" + content + "\' WHERE id = " + id;
+            statement.executeUpdate(sql);
+            ok = true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
     //extract the contents to be written
-    private void extract(String path) {
-        String content;
+    private void extract(int id, String path) {
+        String content = "";
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
-            listResult.add(path);
-            extractedTexts.add(content);
+        }
+        if(!content.equals("")) {
+            content = content.replaceAll("'", "''");
+            storeContentsInDB(id, content);
         }
     }
 
     //extracting the path from the database, exract and writetoFile are called here
-    public void extractContents() {
+    public void populateDB() {
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
               System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              String query = "SELECT * FROM sourcePath";
-              Statement st = con.createStatement(); //creates the java statement
-              ResultSet rs = st.executeQuery(query); // execute the query, and get a java resultset
-              while (rs.next()) // iterate through the java resultset
+              String query = "SELECT * FROM datasources";
+              Statement st = con.createStatement();                     //creates the java statement
+              ResultSet rs = st.executeQuery(query);                    // execute the query, and get a java resultset
+              while (rs.next())                                         // iterate through the java resultset
               {
-                //int id = rs.getInt("id");
+                int id = rs.getInt("id");
                 String path = rs.getString("path");
-                extract(path);
+                String content = rs.getString("extractedText");
+                if(content == null) {
+                    extract(id, path);
+                }
+                else {
+                    //check if equal ba sila, if not, update the value of extractedtext
+                }
               }
               st.close();
               con.close();
@@ -264,4 +284,6 @@ public class MineIt {
         String res = listResult.size() + " Search Result(s)";
         javax.swing.JOptionPane.showMessageDialog(null, list, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
+
+
 }
