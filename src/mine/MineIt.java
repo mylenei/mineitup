@@ -21,7 +21,6 @@ public class MineIt {
     //private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
     private ArrayList<String> synonymsOfKeyword = new ArrayList<String>(5);
     private ArrayList<String> extractedTexts = new ArrayList<String>(10);
-    private int ctr = 0;
     private String keyword;
     private ContentReader reader;
     private LinkedList<String> listResult;
