@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.text.*;
 import java.awt.Color;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * The application's main frame.
@@ -343,14 +343,14 @@ public class MineView extends FrameView {
             mine.searchKeywordOccurence(txtKeyword.getText());
             displayResults(mine.getExtractedTexts());
             resultPanel.setVisible(true);
-            Vector<String> pattern = mine.getSynonymsOfKeyword();
+            ArrayList<String> pattern = mine.getSynonymsOfKeyword();
             pattern.add(txtKeyword.getText());
             highlight(txtPaneResult, pattern);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void displayResults(Vector<String> texts) {
+    private void displayResults(ArrayList<String> texts) {
         String result = "y";
         for(String s : texts) {
             result += s + "\n";
@@ -383,7 +383,7 @@ public class MineView extends FrameView {
         }
     }
 
-     public void highlight(JTextComponent textComp, Vector<String> pattern) {
+     public void highlight(JTextComponent textComp, ArrayList<String> pattern) {
         // First remove all old highlights
         removeHighlights(textComp);
 

@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Vector;
+import java.util.ArrayList;
 import rita.wordnet.*;
 import java.io.*;
 
@@ -19,8 +19,8 @@ import java.io.*;
  */
 public class MineIt {
     //private final String[] unnecessaryKeywords = {"the", "a", "or", "and", "nor", "an"};
-    private Vector<String> synonymsOfKeyword = new Vector<String>(5);
-    private Vector<String> extractedTexts = new Vector<String>(10);
+    private ArrayList<String> synonymsOfKeyword = new ArrayList<String>(5);
+    private ArrayList<String> extractedTexts = new ArrayList<String>(10);
     private int ctr = 0;
     private String keyword;
     private ContentReader reader;
@@ -32,19 +32,19 @@ public class MineIt {
         listResult = new LinkedList<String>();
     }
 
-    public Vector<String> getExtractedTexts() {
+    public ArrayList<String> getExtractedTexts() {
         return extractedTexts;
     }
 
-    public void setExtractedTexts(Vector<String> extractedTexts) {
+    public void setExtractedTexts(ArrayList<String> extractedTexts) {
         this.extractedTexts = extractedTexts;
     }
 
-    public Vector<String> getSynonymsOfKeyword() {
+    public ArrayList<String> getSynonymsOfKeyword() {
         return synonymsOfKeyword;
     }
 
-    public void setSynonymsOfKeyword(Vector<String> synonymsOfKeyword) {
+    public void setSynonymsOfKeyword(ArrayList<String> synonymsOfKeyword) {
         this.synonymsOfKeyword = synonymsOfKeyword;
     }
 
@@ -195,7 +195,7 @@ public class MineIt {
         }
         displayListResult(listResult);
     }
-    private boolean contentContainsKeyword(String content, Vector<String> keywords) {
+    private boolean contentContainsKeyword(String content, ArrayList<String> keywords) {
         boolean ok = false;
         for(String s: keywords) {
             if(content.toLowerCase().contains(s)) {
