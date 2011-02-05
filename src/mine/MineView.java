@@ -326,8 +326,7 @@ public class MineView extends FrameView {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         btnSearch.setEnabled(false);
-        //resetting the locations of the logo, textfield and button
-        if(!searched) {
+        if(!searched) {                                             //resetting the locations of the logo, textfield and button
             ClassLoader cldr = this.getClass().getClassLoader();
             java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
             ImageIcon icon = new ImageIcon(imageURL);

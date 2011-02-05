@@ -6,20 +6,27 @@
 package mine;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 
 /**
  *
  * @author wella
  */
 public class FullTextSearch {
-    private ArrayList<String> extractedTexts = new ArrayList<String>(10);
-    private LinkedList<String> listResult;
+    private LinkedHashMap contents;
     private ContentReader reader;
 
     public FullTextSearch() {
+        contents = new LinkedHashMap();
         reader = new ContentReader();
+    }
+
+    public LinkedHashMap getContents() {
+        return contents;
+    }
+
+    public void setContents(LinkedHashMap contents) {
+        this.contents = contents;
     }
 
     public ContentReader getReader() {
@@ -30,7 +37,9 @@ public class FullTextSearch {
         this.reader = reader;
     }
 
-    public void search(String keyword) {
+    //returns the number of search results
+    public int search(String keyword) {
+        int numOfResults = 0;
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
@@ -47,6 +56,8 @@ public class FullTextSearch {
                 int id = rs.getInt("id");
                 String path = rs.getString("extractedText");
                 System.out.println(id);
+                store(path);
+                numOfResults++;
               }
               st.close();
               con.close();
@@ -58,34 +69,32 @@ public class FullTextSearch {
         catch (Exception e){
           e.printStackTrace();
         }
+        return numOfResults;
     }
 
-    private void extract(String path) {
-        String content;
+    //returns true if content that is extracted is stored in the LinkedHashMap, false otherwise
+    public boolean store(String path) {
+        String content = "";
+        boolean ok = false;
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".xls") || path.endsWith(".xlsx")) {
             content = reader.readExcelFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
-            listResult.add(path);
-            extractedTexts.add(content);
         }
+        if(!content.equals("")) {
+            contents.put(path, contents);
+            ok = true;
+        }
+        return ok;
     }
 }
