@@ -13,20 +13,21 @@ import java.util.LinkedHashMap;
  * @author wella
  */
 public class FullTextSearch {
-    private LinkedHashMap contents;
+    private LinkedHashMap extractedTexts;
+    //private LinkedHashMap<String> extractedTexts;
     private ContentReader reader;
 
     public FullTextSearch() {
-        contents = new LinkedHashMap();
+        extractedTexts = new LinkedHashMap();
         reader = new ContentReader();
     }
 
-    public LinkedHashMap getContents() {
-        return contents;
+    public LinkedHashMap getExtractedTexts() {
+        return extractedTexts;
     }
 
-    public void setContents(LinkedHashMap contents) {
-        this.contents = contents;
+    public void setExtractedTexts(LinkedHashMap extractedTexts) {
+        this.extractedTexts = extractedTexts;
     }
 
     public ContentReader getReader() {
@@ -45,7 +46,7 @@ public class FullTextSearch {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
-              String query = "SELECT id,extractedText, MATCH(path,extractedText) AGAINST"
+              String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
                       + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
@@ -54,9 +55,9 @@ public class FullTextSearch {
               while (rs.next())                                         // iterate through the java resultset
               {
                 int id = rs.getInt("id");
-                String path = rs.getString("extractedText");
+                String path = rs.getString("path");
+                extractedTexts.put(path,rs.getString("extractedText"));
                 System.out.println(id);
-                store(path);
                 numOfResults++;
               }
               st.close();
@@ -92,7 +93,7 @@ public class FullTextSearch {
             content = reader.readWebText(path);
         }
         if(!content.equals("")) {
-            contents.put(path, contents);
+            extractedTexts.put(path,content);
             ok = true;
         }
         return ok;

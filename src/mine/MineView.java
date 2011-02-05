@@ -25,17 +25,17 @@ import java.util.ArrayList;
  */
 public class MineView extends FrameView {
     private boolean searched = false;
-    MineIt mine;
-
-    // An instance of the private subclass of the default highlight painter
-    Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.red);
+    private MineIt mine;
+    private Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.red);        // An instance of the private subclass of the default highlight painter
     
     public MineView(SingleFrameApplication app) {
         super(app);
-        mine = new MineIt();
-        mine.populateDB();
         initComponents();
         resultPanel.setVisible(false);
+
+        mine = new MineIt();
+        mine.populateDB();
+
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
@@ -339,24 +339,30 @@ public class MineView extends FrameView {
             searched = true;
         }
         if(!txtKeyword.getText().trim().equals("")) {
-//            mine.searchKeywordOccurence(txtKeyword.getText());
-//            displayResults(mine.getExtractedTexts());
-//            resultPanel.setVisible(true);
-//            ArrayList<String> pattern = mine.getSynonymsOfKeyword();
-//            pattern.add(txtKeyword.getText());
-            FullTextSearch search = new FullTextSearch();
-            search.search(txtKeyword.getText().trim());
-            //highlight(txtPaneResult, pattern);
+            FullTextSearch fts = new FullTextSearch();
+            fts.search(txtKeyword.getText().trim());
+            displayResults(fts.getExtractedTexts());
+            resultPanel.setVisible(true);
+            ArrayList<String> pattern = mine.getSynonymsOfKeyword();
+            pattern.add(txtKeyword.getText());
+            highlight(txtPaneResult, pattern);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void displayResults(ArrayList<String> texts) {
-        String result = "y";
-        for(String s : texts) {
-            result += s + "\n";
+    private void displayResults(java.util.LinkedHashMap texts) {
+        String resultPath = "";
+        String resultContents = "";
+        java.util.Iterator i = texts.keySet().iterator();
+        java.util.Iterator j = texts.entrySet().iterator();
+        while(i.hasNext()) {
+            resultPath += i.next() + "\n";
+            resultContents += j.next() + "\n********************\n";
         }
-        txtPaneResult.setText(result);
+        String res = texts.size() + " Search Result(s)";
+        javax.swing.JOptionPane.showMessageDialog(null, resultPath, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        txtPaneResult.setText(resultContents);
+
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
