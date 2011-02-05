@@ -343,9 +343,9 @@ public class MineView extends FrameView {
             fts.search(txtKeyword.getText().trim());
             displayResults(fts.getExtractedTexts());
             resultPanel.setVisible(true);
-            ArrayList<String> pattern = mine.getSynonymsOfKeyword();
-            pattern.add(txtKeyword.getText());
-            highlight(txtPaneResult, pattern);
+            //ArrayList<String> pattern = mine.getSynonymsOfKeyword();
+            //pattern.add(txtKeyword.getText());
+           // highlight(txtPaneResult, pattern);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed

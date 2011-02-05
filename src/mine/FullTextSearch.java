@@ -7,6 +7,7 @@ package mine;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
+import java.util.Hashtable;
 
 /**
  *
@@ -14,7 +15,6 @@ import java.util.LinkedHashMap;
  */
 public class FullTextSearch {
     private LinkedHashMap extractedTexts;
-    //private LinkedHashMap<String> extractedTexts;
     private ContentReader reader;
 
     public FullTextSearch() {
@@ -41,6 +41,7 @@ public class FullTextSearch {
     //returns the number of search results
     public int search(String keyword) {
         int numOfResults = 0;
+        extractedTexts.clear();
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
@@ -97,5 +98,20 @@ public class FullTextSearch {
             ok = true;
         }
         return ok;
+    }
+
+    private Hashtable<String, String[]> getRelatedWords(String keyword) {
+        Hashtable<String, String[]> dictionary = new Hashtable();
+        rita.wordnet.RiWordnet wordnet = new rita.wordnet.RiWordnet(null);
+        String[] words = keyword.split(" ");
+        for(String s : words) {
+            if(wordnet.exists(s)) {
+                dictionary.put(s, wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword))); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
+            }
+            else{
+                dictionary.put(s, null);
+            }
+        }
+        return dictionary;
     }
 }
