@@ -345,7 +345,7 @@ public class MineView extends FrameView {
             resultPanel.setVisible(true);
             //ArrayList<String> pattern = mine.getSynonymsOfKeyword();
             //pattern.add(txtKeyword.getText());
-           // highlight(txtPaneResult, pattern);
+            highlight(txtPaneResult, txtKeyword.getText());
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -354,7 +354,7 @@ public class MineView extends FrameView {
         String resultPath = "";
         String resultContents = "";
         java.util.Iterator i = texts.keySet().iterator();
-        java.util.Iterator j = texts.entrySet().iterator();
+        java.util.Iterator j = texts.values().iterator();
         while(i.hasNext()) {
             resultPath += i.next() + "\n";
             resultContents += j.next() + "\n********************\n";
@@ -371,29 +371,26 @@ public class MineView extends FrameView {
         }
     }//GEN-LAST:event_txtKeywordKeyPressed
 
-        // Creates highlights around all occurrences of pattern in textComp
+    // Creates highlights around all occurrences of pattern in textComp
     public void highlight(JTextComponent textComp, String pattern) {
-        // First remove all old highlights
-        removeHighlights(textComp);
+        removeHighlights(textComp);                                                    // First remove all old highlights
         try {
             Highlighter hilite = textComp.getHighlighter();
             Document doc = textComp.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-            // Search for pattern
-            while ((pos = text.indexOf(pattern, pos)) >= 0) {
-                // Create highlighter using private painter and apply around pattern
-                hilite.addHighlight(pos, pos+pattern.length(), myHighlightPainter);
-                pos += pattern.length();
+            for(String t : text.split(" ")) {
+                if(t.equalsIgnoreCase(pattern)) {
+                    pos = text.indexOf(t);
+                    hilite.addHighlight(pos, pos+ t.length(), myHighlightPainter);
+                }
             }
         } catch (BadLocationException e) {
         }
     }
 
      public void highlight(JTextComponent textComp, ArrayList<String> pattern) {
-        // First remove all old highlights
-        removeHighlights(textComp);
-
+        removeHighlights(textComp);                                                     // First remove all old highlights
         try {
             Highlighter hilite = textComp.getHighlighter();
             Document doc = textComp.getDocument();

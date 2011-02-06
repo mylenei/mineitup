@@ -69,7 +69,6 @@ public class FullTextSearch {
                 double score = rs.getDouble("SCORE");
                 
                 if(score > thresholdScore) {
-                    javax.swing.JOptionPane.showMessageDialog(null, path + "\n" + score);
                     extractedTexts.put(path,rs.getString("extractedText"));
                 }
                 System.out.println(id);
@@ -88,7 +87,7 @@ public class FullTextSearch {
         return numOfResults;
     }
 
-    //returns true if content that is extracted is stored in the LinkedHashMap, false otherwise
+    //stores the extracted text of the given path and returns true if storing is successful, false otherwise.
     public boolean store(String path) {
         String content = "";
         boolean ok = false;
@@ -115,13 +114,13 @@ public class FullTextSearch {
     }
 
     //search also for the realted words or synonyms of the given keyword
-    private Hashtable<String, String[]> getRelatedWords(String keyword) {
+    public Hashtable<String, String[]> getRelatedWords(String keyword) {
         Hashtable<String, String[]> dictionary = new Hashtable();
         rita.wordnet.RiWordnet wordnet = new rita.wordnet.RiWordnet(null);
         String[] words = keyword.split(" ");
         for(String s : words) {
             if(wordnet.exists(s)) {
-                dictionary.put(s, wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword))); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
+                dictionary.put(s, wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword))); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang max search kay allsynonyms ang normal search kay allsynsets. :D
             }
             else{
                 dictionary.put(s, null);
