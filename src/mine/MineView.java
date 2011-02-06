@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class MineView extends FrameView {
     private boolean searched = false;
     private MineIt mine;
-    private Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.red);        // An instance of the private subclass of the default highlight painter
+    private Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
     
     public MineView(SingleFrameApplication app) {
         super(app);
@@ -345,7 +345,7 @@ public class MineView extends FrameView {
             resultPanel.setVisible(true);
             //ArrayList<String> pattern = mine.getSynonymsOfKeyword();
             //pattern.add(txtKeyword.getText());
-            highlight(txtPaneResult, txtKeyword.getText());
+            highlight(txtPaneResult, txtKeyword.getText().trim());
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -379,10 +379,15 @@ public class MineView extends FrameView {
             Document doc = textComp.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-            for(String t : text.split(" ")) {
-                if(t.equalsIgnoreCase(pattern)) {
-                    pos = text.indexOf(t);
-                    hilite.addHighlight(pos, pos+ t.length(), myHighlightPainter);
+            rita.RiString ritext = new rita.RiString(text);
+            String[] words = ritext.getWords();
+            for(String s : words) {
+                System.out.println(s);
+                if(pattern.equalsIgnoreCase(s)) {
+                    //System.out.println(s);
+                    pos = text.indexOf(s, pos);
+                    hilite.addHighlight(pos, pos + s.length(), myHighlightPainter);
+                    pos += s.length();
                 }
             }
         } catch (BadLocationException e) {
