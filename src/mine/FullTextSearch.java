@@ -16,7 +16,7 @@ import java.util.Hashtable;
 public class FullTextSearch {
     private LinkedHashMap extractedTexts;
     private ContentReader reader;
-    private double thresholdScore = 0.10;
+    private double thresholdScore = 0.20;
 
     public FullTextSearch() {
         extractedTexts = new LinkedHashMap();
@@ -52,6 +52,8 @@ public class FullTextSearch {
         int numOfResults = 0;
         extractedTexts.clear();
         Connection con = null;
+        rita.RiStemmer stem = new rita.RiStemmer(null, rita.RiStemmer.PORTER_STEMMER);
+
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
@@ -60,6 +62,11 @@ public class FullTextSearch {
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
                       + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
+//                      + "UNION"
+//                      + "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+//                      + "('character' IN NATURAL LANGUAGE MODE) AS SCORE "
+//                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
+//                      + "('character' IN NATURAL LANGUAGE MODE) UNION";
               Statement st = con.createStatement();                     //creates the java statement
               ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
               while (rs.next())                                         // iterate through the java resultset

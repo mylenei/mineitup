@@ -343,9 +343,9 @@ public class MineView extends FrameView {
             fts.search(txtKeyword.getText().trim());
             displayResults(fts.getExtractedTexts());
             resultPanel.setVisible(true);
-            //ArrayList<String> pattern = mine.getSynonymsOfKeyword();
-            //pattern.add(txtKeyword.getText());
-            highlight(txtPaneResult, txtKeyword.getText().trim());
+            rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
+            String[] words = text.getWords();
+            highlight(txtPaneResult, words);
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -382,12 +382,32 @@ public class MineView extends FrameView {
             rita.RiString ritext = new rita.RiString(text);
             String[] words = ritext.getWords();
             for(String s : words) {
-                System.out.println(s);
                 if(pattern.equalsIgnoreCase(s)) {
-                    //System.out.println(s);
                     pos = text.indexOf(s, pos);
                     hilite.addHighlight(pos, pos + s.length(), myHighlightPainter);
                     pos += s.length();
+                }
+            }
+        } catch (BadLocationException e) {
+        }
+    }
+    // Creates highlights around all occurrences of pattern in textComp
+    public void highlight(JTextComponent textComp, String[] pattern) {
+        removeHighlights(textComp);                                                    // First remove all old highlights
+        try {
+            Highlighter hilite = textComp.getHighlighter();
+            Document doc = textComp.getDocument();
+            String text = doc.getText(0, doc.getLength());
+            int pos = 0;
+            rita.RiString ritext = new rita.RiString(text);
+            String[] words = ritext.getWords();
+            for(String s : words) {
+                for(String p : pattern) {
+                    if(p.equalsIgnoreCase(s)) {
+                        pos = text.indexOf(s, pos);
+                        hilite.addHighlight(pos, pos + s.length(), myHighlightPainter);
+                        pos += s.length();
+                    }
                 }
             }
         } catch (BadLocationException e) {
@@ -401,17 +421,10 @@ public class MineView extends FrameView {
             Document doc = textComp.getDocument();
             String text = doc.getText(0, doc.getLength());
             int pos = 0;
-            //rita.RiKWICker wicker = new rita.RiKWICker(null);
-           // String[] linesOfText = text.split("\r\n");
-           // wicker.addLines(linesOfText);
-            // Search for pattern
             for(String p : pattern) {
                 while ((pos = text.indexOf(p, pos)) >= 0) {
-                    //if(text.charAt(pos-1) == ' ' && text.charAt(pos+1) == ' ') {
-                        // Create highlighter using private painter and apply around pattern
-                        hilite.addHighlight(pos, pos+p.length(), myHighlightPainter);
-                        pos += p.length();
-                    //}
+                    hilite.addHighlight(pos, pos+p.length(), myHighlightPainter);
+                    pos += p.length();
                 }
             }
         } catch (BadLocationException e) {
