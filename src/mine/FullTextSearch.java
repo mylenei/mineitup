@@ -16,10 +16,19 @@ import java.util.Hashtable;
 public class FullTextSearch {
     private LinkedHashMap extractedTexts;
     private ContentReader reader;
+    private double thresholdScore = 0.10;
 
     public FullTextSearch() {
         extractedTexts = new LinkedHashMap();
         reader = new ContentReader();
+    }
+
+    public double getThresholdScore() {
+        return thresholdScore;
+    }
+
+    public void setThresholdScore(double thresholdScore) {
+        this.thresholdScore = thresholdScore;
     }
 
     public LinkedHashMap getExtractedTexts() {
@@ -52,12 +61,17 @@ public class FullTextSearch {
                       + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
               Statement st = con.createStatement();                     //creates the java statement
-              ResultSet rs = st.executeQuery(query);                    // execute the query, and get a java resultset
+              ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
               while (rs.next())                                         // iterate through the java resultset
               {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
-                extractedTexts.put(path,rs.getString("extractedText"));
+                double score = rs.getDouble("SCORE");
+                
+                if(score > thresholdScore) {
+                    javax.swing.JOptionPane.showMessageDialog(null, path + "\n" + score);
+                    extractedTexts.put(path,rs.getString("extractedText"));
+                }
                 System.out.println(id);
                 numOfResults++;
               }
@@ -100,6 +114,7 @@ public class FullTextSearch {
         return ok;
     }
 
+    //search also for the realted words or synonyms of the given keyword
     private Hashtable<String, String[]> getRelatedWords(String keyword) {
         Hashtable<String, String[]> dictionary = new Hashtable();
         rita.wordnet.RiWordnet wordnet = new rita.wordnet.RiWordnet(null);
