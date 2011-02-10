@@ -43,8 +43,6 @@ public class MineView extends FrameView {
         myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
         texts = new LinkedHashMap();
         ctr = 0;
-        keyI = texts.keySet().iterator();
-        valueI = texts.values().iterator();
         
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -383,6 +381,8 @@ public class MineView extends FrameView {
             FullTextSearch fts = new FullTextSearch();
             fts.search(txtKeyword.getText().trim());
             texts = fts.getExtractedTexts();
+            keyI = texts.keySet().iterator();
+            valueI = texts.values().iterator();
             displayInitialResult();
             resultPanel.setVisible(true);
             rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
@@ -399,8 +399,9 @@ public class MineView extends FrameView {
         }
         String res = texts.size() + " Search Result(s)";
         javax.swing.JOptionPane.showMessageDialog(null, resultPath, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        
-        txtPaneResult.setText(valueI.next().toString()); //the first result is displayed
+        if(valueI.hasNext()) {
+            txtPaneResult.setText(valueI.next().toString()); //the first result is displayed
+        }
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
@@ -410,7 +411,9 @@ public class MineView extends FrameView {
     }//GEN-LAST:event_txtKeywordKeyPressed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        txtPaneResult.setText(valueI.next().toString());
+        if(valueI.hasNext()) {
+            txtPaneResult.setText(valueI.next().toString());
+        }
     }//GEN-LAST:event_btnNextActionPerformed
 
     // Creates highlights around all occurrences of pattern in textComp
