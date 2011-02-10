@@ -31,8 +31,7 @@ public class MineView extends FrameView {
     private MineIt mine;
     private Highlighter.HighlightPainter myHighlightPainter;
     private LinkedHashMap texts;
-    private int ctr;
-    private Iterator keyI, valueI;
+    private Iterator keyI;
     private ListIterator valueIterator;
     
     public MineView(SingleFrameApplication app) {
@@ -44,7 +43,6 @@ public class MineView extends FrameView {
         mine.populateDB();
         myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
         texts = new LinkedHashMap();
-        ctr = 0;
         
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -217,9 +215,11 @@ public class MineView extends FrameView {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
+        txtPaneResult.setEditable(false);
         txtPaneResult.setName("txtPaneResult"); // NOI18N
         jScrollPane2.setViewportView(txtPaneResult);
 
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
         jToolBar1.setName("jToolBar1"); // NOI18N
 
@@ -254,19 +254,20 @@ public class MineView extends FrameView {
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1249, Short.MAX_VALUE)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1229, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+                .addContainerGap()
+                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE))
+                .addContainerGap())
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout scrollPanelLayout = new javax.swing.GroupLayout(scrollPanel);
@@ -389,7 +390,6 @@ public class MineView extends FrameView {
             fts.search(txtKeyword.getText().trim());
             texts = fts.getExtractedTexts();
             keyI = texts.keySet().iterator();
-            valueI = texts.values().iterator();
             valueIterator = fts.getContentList().listIterator();
             displayInitialResult();
             resultPanel.setVisible(true);

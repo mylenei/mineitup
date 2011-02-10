@@ -153,21 +153,23 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jToolBar1" alignment="0" pref="1249" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                              <Component id="jScrollPane2" pref="1229" max="32767" attributes="0"/>
-                              <EmptySpace min="10" pref="10" max="10" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jToolBar1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane2" alignment="0" pref="1239" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jToolBar1" min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="jToolBar1" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane2" pref="283" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -185,6 +187,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JTextPane" name="txtPaneResult">
                           <Properties>
+                            <Property name="editable" type="boolean" value="false"/>
                             <Property name="name" type="java.lang.String" value="txtPaneResult" noResource="true"/>
                           </Properties>
                         </Component>
@@ -192,6 +195,7 @@
                     </Container>
                     <Container class="javax.swing.JToolBar" name="jToolBar1">
                       <Properties>
+                        <Property name="floatable" type="boolean" value="false"/>
                         <Property name="rollover" type="boolean" value="true"/>
                         <Property name="name" type="java.lang.String" value="jToolBar1" noResource="true"/>
                       </Properties>
