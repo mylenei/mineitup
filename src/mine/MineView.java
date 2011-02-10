@@ -19,6 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.text.*;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Iterator;
 
 /**
  * The application's main frame.
@@ -26,7 +28,10 @@ import java.util.ArrayList;
 public class MineView extends FrameView {
     private boolean searched = false;
     private MineIt mine;
-    private Highlighter.HighlightPainter myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
+    private Highlighter.HighlightPainter myHighlightPainter;
+    private LinkedHashMap texts;
+    private int ctr;
+    private Iterator keyI, valueI;
     
     public MineView(SingleFrameApplication app) {
         super(app);
@@ -35,7 +40,12 @@ public class MineView extends FrameView {
 
         mine = new MineIt();
         mine.populateDB();
-
+        myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
+        texts = new LinkedHashMap();
+        ctr = 0;
+        keyI = texts.keySet().iterator();
+        valueI = texts.values().iterator();
+        
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
@@ -120,6 +130,9 @@ public class MineView extends FrameView {
         resultPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtPaneResult = new javax.swing.JTextPane();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnBack = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -207,19 +220,47 @@ public class MineView extends FrameView {
         txtPaneResult.setName("txtPaneResult"); // NOI18N
         jScrollPane2.setViewportView(txtPaneResult);
 
+        jToolBar1.setRollover(true);
+        jToolBar1.setName("jToolBar1"); // NOI18N
+
+        btnBack.setIcon(resourceMap.getIcon("btnBack.icon")); // NOI18N
+        btnBack.setText(resourceMap.getString("btnBack.text")); // NOI18N
+        btnBack.setToolTipText(resourceMap.getString("btnBack.toolTipText")); // NOI18N
+        btnBack.setFocusable(false);
+        btnBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBack.setName("btnBack"); // NOI18N
+        btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(btnBack);
+
+        btnNext.setIcon(resourceMap.getIcon("btnNext.icon")); // NOI18N
+        btnNext.setText(resourceMap.getString("btnNext.text")); // NOI18N
+        btnNext.setFocusable(false);
+        btnNext.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnNext.setName("btnNext"); // NOI18N
+        btnNext.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnNext);
+
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1249, Short.MAX_VALUE)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1229, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(10, 10, 10))
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -341,7 +382,8 @@ public class MineView extends FrameView {
         if(!txtKeyword.getText().trim().equals("")) {
             FullTextSearch fts = new FullTextSearch();
             fts.search(txtKeyword.getText().trim());
-            displayResults(fts.getExtractedTexts());
+            texts = fts.getExtractedTexts();
+            displayInitialResult();
             resultPanel.setVisible(true);
             rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
             String[] words = text.getWords();
@@ -350,19 +392,15 @@ public class MineView extends FrameView {
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void displayResults(java.util.LinkedHashMap texts) {
+    private void displayInitialResult() {
         String resultPath = "";
-        String resultContents = "";
-        java.util.Iterator i = texts.keySet().iterator();
-        java.util.Iterator j = texts.values().iterator();
-        while(i.hasNext()) {
-            resultPath += i.next() + "\n";
-            resultContents += j.next() + "\n********************\n";
+        while(keyI.hasNext()) {
+            resultPath += keyI.next() + "\n";
         }
         String res = texts.size() + " Search Result(s)";
         javax.swing.JOptionPane.showMessageDialog(null, resultPath, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        txtPaneResult.setText(resultContents);
-
+        
+        txtPaneResult.setText(valueI.next().toString()); //the first result is displayed
     }
 
     private void txtKeywordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeywordKeyPressed
@@ -370,6 +408,10 @@ public class MineView extends FrameView {
             btnSearch.doClick();
         }
     }//GEN-LAST:event_txtKeywordKeyPressed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        txtPaneResult.setText(valueI.next().toString());
+    }//GEN-LAST:event_btnNextActionPerformed
 
     // Creates highlights around all occurrences of pattern in textComp
     public void highlight(JTextComponent textComp, String pattern) {
@@ -451,10 +493,13 @@ public class MineView extends FrameView {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnNext;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
