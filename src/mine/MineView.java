@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  * The application's main frame.
@@ -32,6 +33,7 @@ public class MineView extends FrameView {
     private LinkedHashMap texts;
     private int ctr;
     private Iterator keyI, valueI;
+    private ListIterator valueIterator;
     
     public MineView(SingleFrameApplication app) {
         super(app);
@@ -228,6 +230,11 @@ public class MineView extends FrameView {
         btnBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnBack.setName("btnBack"); // NOI18N
         btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnBack);
 
         btnNext.setIcon(resourceMap.getIcon("btnNext.icon")); // NOI18N
@@ -383,6 +390,7 @@ public class MineView extends FrameView {
             texts = fts.getExtractedTexts();
             keyI = texts.keySet().iterator();
             valueI = texts.values().iterator();
+            valueIterator = fts.getContentList().listIterator();
             displayInitialResult();
             resultPanel.setVisible(true);
             rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
@@ -399,8 +407,8 @@ public class MineView extends FrameView {
         }
         String res = texts.size() + " Search Result(s)";
         javax.swing.JOptionPane.showMessageDialog(null, resultPath, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        if(valueI.hasNext()) {
-            txtPaneResult.setText(valueI.next().toString()); //the first result is displayed
+        if(valueIterator.hasNext()) {
+            txtPaneResult.setText(valueIterator.next().toString()); //the first result is displayed
         }
     }
 
@@ -411,10 +419,22 @@ public class MineView extends FrameView {
     }//GEN-LAST:event_txtKeywordKeyPressed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        if(valueI.hasNext()) {
-            txtPaneResult.setText(valueI.next().toString());
+        if(valueIterator.hasNext()) {
+            txtPaneResult.setText(valueIterator.next().toString());
+            rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
+            String[] words = text.getWords();
+            highlight(txtPaneResult, words);
         }
     }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+       if(valueIterator.hasPrevious()) {
+            txtPaneResult.setText(valueIterator.previous().toString());
+            rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
+            String[] words = text.getWords();
+            highlight(txtPaneResult, words);
+       }
+    }//GEN-LAST:event_btnBackActionPerformed
 
     // Creates highlights around all occurrences of pattern in textComp
     public void highlight(JTextComponent textComp, String pattern) {

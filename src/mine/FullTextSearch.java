@@ -7,6 +7,7 @@ package mine;
 
 import java.sql.*;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Hashtable;
 
 /**
@@ -15,11 +16,13 @@ import java.util.Hashtable;
  */
 public class FullTextSearch {
     private LinkedHashMap extractedTexts;
+    private LinkedList contentList;
     private ContentReader reader;
     private double thresholdScore = 0.20;
 
     public FullTextSearch() {
         extractedTexts = new LinkedHashMap();
+        contentList = new LinkedList<String>();
         reader = new ContentReader();
     }
 
@@ -37,6 +40,14 @@ public class FullTextSearch {
 
     public void setExtractedTexts(LinkedHashMap extractedTexts) {
         this.extractedTexts = extractedTexts;
+    }
+
+    public LinkedList getContentList() {
+        return contentList;
+    }
+
+    public void setContentList(LinkedList contentList) {
+        this.contentList = contentList;
     }
 
     public ContentReader getReader() {
@@ -76,7 +87,9 @@ public class FullTextSearch {
                 double score = rs.getDouble("SCORE");
                 
                 if(score > thresholdScore) {
-                    extractedTexts.put(path,rs.getString("extractedText"));
+                    String texts = rs.getString("extractedText");
+                    extractedTexts.put(path,texts);
+                    contentList.add(texts);
                 }
                 System.out.println(id);
                 numOfResults++;
