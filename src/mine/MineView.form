@@ -156,7 +156,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jToolBar1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jToolBar1" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
                                   <Component id="jScrollPane2" alignment="0" pref="1239" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -208,8 +208,8 @@
                             <Property name="text" type="java.lang.String" resourceKey="btnBack.text"/>
                             <Property name="toolTipText" type="java.lang.String" resourceKey="btnBack.toolTipText"/>
                             <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="horizontalTextPosition" type="int" value="0"/>
-                            <Property name="name" type="java.lang.String" value="btnBack" noResource="true"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                            <Property name="verticalTextPosition" type="int" value="3"/>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
                           <Events>
@@ -228,6 +228,12 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextActionPerformed"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblResults">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" resourceKey="lblResults.text"/>
+                            <Property name="name" type="java.lang.String" value="lblResults" noResource="true"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>

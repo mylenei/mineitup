@@ -81,11 +81,11 @@ public class FullTextSearch {
               String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
                       + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
-                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE) UNION "
-                      + "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
-                      + "('character' IN NATURAL LANGUAGE MODE) AS SCORE "
-                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
-                      + "('character' IN NATURAL LANGUAGE MODE)";
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE)"; //UNION "
+//                      + "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+//                      + "('character' IN NATURAL LANGUAGE MODE) AS SCORE "
+//                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
+//                      + "('character' IN NATURAL LANGUAGE MODE)";
               Statement st = con.createStatement();                     //creates the java statement
               ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
               while (rs.next())                                         // iterate through the java resultset

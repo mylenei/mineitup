@@ -33,6 +33,7 @@ public class MineView extends FrameView {
     private LinkedHashMap texts;
     private Iterator keyI;
     private ListIterator valueIterator;
+    private int ctr = 0, resultCount = 0;
     
     public MineView(SingleFrameApplication app) {
         super(app);
@@ -131,6 +132,7 @@ public class MineView extends FrameView {
         jToolBar1 = new javax.swing.JToolBar();
         btnBack = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
+        lblResults = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -227,8 +229,8 @@ public class MineView extends FrameView {
         btnBack.setText(resourceMap.getString("btnBack.text")); // NOI18N
         btnBack.setToolTipText(resourceMap.getString("btnBack.toolTipText")); // NOI18N
         btnBack.setFocusable(false);
-        btnBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnBack.setName("btnBack"); // NOI18N
+        btnBack.setFocusable(false);
+        btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,6 +252,10 @@ public class MineView extends FrameView {
         });
         jToolBar1.add(btnNext);
 
+        lblResults.setText(resourceMap.getString("lblResults.text")); // NOI18N
+        lblResults.setName("lblResults"); // NOI18N
+        jToolBar1.add(lblResults);
+
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
@@ -257,7 +263,7 @@ public class MineView extends FrameView {
             .addGroup(resultPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -405,8 +411,11 @@ public class MineView extends FrameView {
         while(keyI.hasNext()) {
             resultPath += keyI.next() + "\n";
         }
-        String res = texts.size() + " Search Result(s)";
+        resultCount = texts.size();
+        String res = resultCount + " Search Result(s)";
         javax.swing.JOptionPane.showMessageDialog(null, resultPath, res, javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        String resultMsg = "     " + ++ctr + "/" + resultCount;
+        this.lblResults.setText(resultMsg);
         if(valueIterator.hasNext()) {
             txtPaneResult.setText(valueIterator.next().toString()); //the first result is displayed
         }
@@ -420,6 +429,8 @@ public class MineView extends FrameView {
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         if(valueIterator.hasNext()) {
+            String resultMsg = "     " + ++ctr + "/" + resultCount;
+            this.lblResults.setText(resultMsg);
             txtPaneResult.setText(valueIterator.next().toString());
             rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
             String[] words = text.getWords();
@@ -429,6 +440,8 @@ public class MineView extends FrameView {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
        if(valueIterator.hasPrevious()) {
+            String resultMsg = "     " + --ctr + "/" + resultCount;
+            this.lblResults.setText(resultMsg);
             txtPaneResult.setText(valueIterator.previous().toString());
             rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
             String[] words = text.getWords();
@@ -524,6 +537,7 @@ public class MineView extends FrameView {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblLogo;
+    private javax.swing.JLabel lblResults;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
