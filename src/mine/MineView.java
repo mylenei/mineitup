@@ -9,6 +9,7 @@ import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -18,11 +19,15 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.text.*;
 import java.awt.Color;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.apache.lucene.search.spell.*;
+import org.apache.lucene.store.*;
+import java.io.File;
 /**
  * The application's main frame.
  */
@@ -376,6 +381,33 @@ public class MineView extends FrameView {
         setMenuBar(menuBar);
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
+
+    public void spellCheck(String str) {
+        try {
+            File dir = new File("D:/spellchecker/");
+            Directory directory = FSDirectory.open(dir);
+            //open
+            SpellChecker spellChecker = new SpellChecker(directory);
+
+            spellChecker.indexDictionary(
+                 new PlainTextDictionary(new File("D:/fulldictionary00.txt")));
+            String wordForSuggestions = str;
+            int suggestionsNumber = 5;
+            String[] suggestions = spellChecker.
+                suggestSimilar(wordForSuggestions, suggestionsNumber);
+            if (suggestions!=null && suggestions.length>0) {
+                for (String word : suggestions) {
+                    System.out.println("Did you mean:" + word);
+                }
+            }
+            else {
+                System.out.println("No suggestions found for word:"+wordForSuggestions);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         btnSearch.setEnabled(false);

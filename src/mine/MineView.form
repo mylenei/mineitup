@@ -208,8 +208,6 @@
                             <Property name="text" type="java.lang.String" resourceKey="btnBack.text"/>
                             <Property name="toolTipText" type="java.lang.String" resourceKey="btnBack.toolTipText"/>
                             <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="focusable" type="boolean" value="false"/>
-                            <Property name="verticalTextPosition" type="int" value="3"/>
                             <Property name="verticalTextPosition" type="int" value="3"/>
                           </Properties>
                           <Events>
