@@ -17,12 +17,10 @@ import rita.wordnet.*;
  */
 public class MineIt {
     private ArrayList<String> synonymsOfKeyword = new ArrayList<String>(5);
-    private String keyword;
     private ContentReader reader;
     private LinkedList<String> listResult;
 
     public MineIt() {
-        keyword = "";
         reader = new ContentReader();
         listResult = new LinkedList<String>();
     }
@@ -37,14 +35,6 @@ public class MineIt {
 
     public void setSynonymsOfKeyword(String[] synonymsOfKeyword) {
         this.synonymsOfKeyword.addAll(Arrays.asList(synonymsOfKeyword));
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
     }
 
     public LinkedList<String> getListResult() {
@@ -63,18 +53,18 @@ public class MineIt {
         this.reader = reader;
     }
 
-    private String[] getRelatedWords(String keyword) {
-        RiWordnet wordnet = new RiWordnet(null);
-        String[] synonyms;
-        if(wordnet.exists(keyword)) {
-            synonyms = wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword)); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
-        }
-        else{
-            synonyms = new String[1];
-            synonyms[0] = keyword;
-        }
-        return synonyms;
-    }
+//    private String[] getRelatedWords(String keyword) {
+//        RiWordnet wordnet = new RiWordnet(null);
+//        String[] synonyms;
+//        if(wordnet.exists(keyword)) {
+//            synonyms = wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword)); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
+//        }
+//        else{
+//            synonyms = new String[1];
+//            synonyms[0] = keyword;
+//        }
+//        return synonyms;
+//    }
 
     private boolean storeContentsInDB(int id, String content) {
         boolean ok = false;
@@ -97,8 +87,9 @@ public class MineIt {
     }
 
     //extract the contents to be written
-    private void extract(int id, String path) {
+    private boolean extract(int id, String path) {
         String content = "";
+        boolean ok = false;
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
         }
@@ -116,8 +107,9 @@ public class MineIt {
         }
         if(!content.equals("")) {
             content = content.replaceAll("'", "''");
-            storeContentsInDB(id, content);
+            ok = true;
         }
+        return ok;
     }
 
     //extracting the path from the database, exract and writetoFile are called here
@@ -137,7 +129,9 @@ public class MineIt {
                 String path = rs.getString("path");
                 String content = rs.getString("extractedText");
                 if(content == null) {
-                    extract(id, path);
+                    if(extract(id, path)) {
+                        storeContentsInDB(id, content);
+                    }
                 }
                 else {
                     //check if equal ba sila, if not, update the value of extractedtext

@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
-
-import org.apache.lucene.search.spell.*;
-import org.apache.lucene.store.*;
-import java.io.File;
 /**
  * The application's main frame.
  */
@@ -44,6 +40,7 @@ public class MineView extends FrameView {
         super(app);
         initComponents();
         resultPanel.setVisible(false);
+        lblSuggestions.setVisible(false);
 
         mine = new MineIt();
         mine.populateDB();
@@ -138,6 +135,7 @@ public class MineView extends FrameView {
         btnBack = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         lblResults = new javax.swing.JLabel();
+        lblSuggestions = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -234,8 +232,6 @@ public class MineView extends FrameView {
         btnBack.setText(resourceMap.getString("btnBack.text")); // NOI18N
         btnBack.setToolTipText(resourceMap.getString("btnBack.toolTipText")); // NOI18N
         btnBack.setFocusable(false);
-        btnBack.setFocusable(false);
-        btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,6 +257,10 @@ public class MineView extends FrameView {
         lblResults.setName("lblResults"); // NOI18N
         jToolBar1.add(lblResults);
 
+        lblSuggestions.setBackground(resourceMap.getColor("lblSuggestions.background")); // NOI18N
+        lblSuggestions.setText(resourceMap.getString("lblSuggestions.text")); // NOI18N
+        lblSuggestions.setName("lblSuggestions"); // NOI18N
+
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
@@ -268,14 +268,20 @@ public class MineView extends FrameView {
             .addGroup(resultPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(resultPanelLayout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(308, 308, 308)
+                        .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE))
                 .addContainerGap())
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addGap(31, 31, 31))
@@ -382,32 +388,6 @@ public class MineView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void spellCheck(String str) {
-        try {
-            File dir = new File("D:/spellchecker/");
-            Directory directory = FSDirectory.open(dir);
-            //open
-            SpellChecker spellChecker = new SpellChecker(directory);
-
-            spellChecker.indexDictionary(
-                 new PlainTextDictionary(new File("D:/fulldictionary00.txt")));
-            String wordForSuggestions = str;
-            int suggestionsNumber = 5;
-            String[] suggestions = spellChecker.
-                suggestSimilar(wordForSuggestions, suggestionsNumber);
-            if (suggestions!=null && suggestions.length>0) {
-                for (String word : suggestions) {
-                    System.out.println("Did you mean:" + word);
-                }
-            }
-            else {
-                System.out.println("No suggestions found for word:"+wordForSuggestions);
-            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         btnSearch.setEnabled(false);
@@ -426,6 +406,14 @@ public class MineView extends FrameView {
         if(!txtKeyword.getText().trim().equals("")) {
             FullTextSearch fts = new FullTextSearch();
             fts.search(txtKeyword.getText().trim());
+            String[] sg = fts.getSuggestions();
+            if(sg != null) {
+                System.out.println("@@@@@@@@"  + sg.length + "@@@@@@@@@");
+                for(String s : sg) {
+                    lblSuggestions.setText(lblSuggestions.getText() + " " + s + "\t");
+                    lblSuggestions.setVisible(true);
+                }
+            }
             texts = fts.getExtractedTexts();
             keyI = texts.keySet().iterator();
             valueIterator = fts.getContentList().listIterator();
@@ -570,6 +558,7 @@ public class MineView extends FrameView {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblResults;
+    private javax.swing.JLabel lblSuggestions;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
