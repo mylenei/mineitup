@@ -41,11 +41,19 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="resultPanel" alignment="0" min="-2" max="-2" attributes="1"/>
-                              <Component id="headerPanel" alignment="0" min="-2" max="-2" attributes="1"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="resultPanel" alignment="0" min="-2" max="-2" attributes="1"/>
+                                      <Component id="headerPanel" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="437" max="-2" attributes="0"/>
+                                  <Component id="lblSuggestions" min="-2" pref="291" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace pref="41" max="32767" attributes="0"/>
                       </Group>
@@ -56,7 +64,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="headerPanel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lblSuggestions" min="-2" pref="33" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                           <Component id="resultPanel" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -80,12 +90,12 @@
                                       <Component id="lblLogo" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="537" max="-2" attributes="0"/>
-                                      <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="523" max="-2" attributes="0"/>
+                                      <Component id="btnSearch" min="-2" pref="102" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="419" max="-2" attributes="0"/>
-                                      <Component id="txtKeyword" min="-2" pref="311" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="408" max="-2" attributes="0"/>
+                                      <Component id="txtKeyword" min="-2" pref="335" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace pref="359" max="32767" attributes="0"/>
@@ -98,10 +108,9 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblLogo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtKeyword" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="txtKeyword" min="-2" pref="46" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                              <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnSearch" pref="34" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -157,27 +166,40 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jToolBar1" min="-2" pref="99" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="308" max="-2" attributes="0"/>
-                                      <Component id="lblSuggestions" min="-2" pref="321" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane2" pref="1239" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jScrollPane2" alignment="0" pref="1239" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jToolBar1" min="-2" pref="99" max="-2" attributes="0"/>
+                                      <EmptySpace pref="775" max="32767" attributes="0"/>
+                                      <Component id="jButton1" min="-2" pref="111" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Component id="jTextField1" min="-2" pref="213" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jToolBar1" min="-2" pref="22" max="-2" attributes="0"/>
-                                  <Component id="lblSuggestions" min="-2" pref="33" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                      <Component id="jToolBar1" min="-2" pref="22" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="jButton1" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                                          <Component id="jTextField1" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane2" pref="283" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" pref="254" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -243,15 +265,28 @@
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JLabel" name="lblSuggestions">
+                    <Component class="javax.swing.JButton" name="jButton1">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="lblSuggestions.background"/>
-                        <Property name="text" type="java.lang.String" resourceKey="lblSuggestions.text"/>
-                        <Property name="name" type="java.lang.String" value="lblSuggestions" noResource="true"/>
+                        <Property name="font" type="java.awt.Font" resourceKey="btnUpload.font"/>
+                        <Property name="text" type="java.lang.String" resourceKey="btnUpload.text"/>
+                        <Property name="name" type="java.lang.String" value="btnUpload" noResource="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="jTextField1">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" resourceKey="txtUpload.text"/>
+                        <Property name="name" type="java.lang.String" value="txtUpload" noResource="true"/>
                       </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JLabel" name="lblSuggestions">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" resourceKey="lblSuggestions.background"/>
+                    <Property name="text" type="java.lang.String" resourceKey="lblSuggestions.text"/>
+                    <Property name="name" type="java.lang.String" value="lblSuggestions" noResource="true"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -278,6 +313,20 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="addDatasourceMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="addDatasourceMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="addDatasourceMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addDatasourceMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
@@ -289,6 +338,32 @@
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="jMenu1.text"/>
+            <Property name="name" type="java.lang.String" value="jMenu1" noResource="true"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="reloadFormMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="reloadFormMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="reloadFormMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reloadFormMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="refreshAllMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" resourceKey="refreshAllMenuItem.text"/>
+                <Property name="name" type="java.lang.String" value="refreshAllMenuItem" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshAllMenuItemActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

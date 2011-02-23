@@ -8,21 +8,16 @@ package mine;
 import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Hashtable;
-
-import org.apache.lucene.search.spell.*;
-import org.apache.lucene.store.*;
-import java.io.File;
 
 /**
- *
+ * Definition: class that does the full searching of the occurrence of the given keyword. it does a lot more :D
+ * This is implemented through MySQL's support for FTS
  * @author wella
  */
 public class FullTextSearch {
     private LinkedHashMap extractedTexts;
     private LinkedList contentList;
     private ContentReader reader;
-    private String[] suggestions;
     private double thresholdScore = 0.20;
 
     public FullTextSearch() {
@@ -37,14 +32,6 @@ public class FullTextSearch {
 
     public void setThresholdScore(double thresholdScore) {
         this.thresholdScore = thresholdScore;
-    }
-
-    public String[] getSuggestions() {
-        return suggestions;
-    }
-
-    public void setSuggestions(String[] suggestions) {
-        this.suggestions = suggestions;
     }
 
     public LinkedHashMap getExtractedTexts() {
@@ -71,52 +58,40 @@ public class FullTextSearch {
         this.reader = reader;
     }
 
-    //returns the number of search results
+    /*
+     * returns the number of search results
+     */
     public int search(String keyword) {
         int numOfResults = 0;
         extractedTexts.clear();
         Connection con = null;
-        //rita.RiStemmer stem = new rita.RiStemmer(null, rita.RiStemmer.PORTER_STEMMER);
-
         try {
           Class.forName("com.mysql.jdbc.Driver");
           con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
           if(!con.isClosed()) {
-              Hashtable rw = this.getRelatedWords(keyword);
-              if(this.getSuggestions() != null) {
-                    //process the display for the did you mean thing
-                  String[] suggestions = this.getSuggestions();
-                  
-              }
-              else {
-                  String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
-                          + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
-                          + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
-                          + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";// UNION "
-    //                      + "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
-    //                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
-    //                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
-    //                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
-                  Statement st = con.createStatement();                      //creates the java statement
-                  ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
-                  while (rs.next())                                          // iterate through the java resultset
-                  {
-                    int id = rs.getInt("id");
-                    String path = rs.getString("path");
-                    double score = rs.getDouble("SCORE");
+              String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
+                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
+              Statement st = con.createStatement();                      //creates the java statement
+              ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
+              while (rs.next())                                          // iterate through the java resultset
+              {
+                int id = rs.getInt("id");
+                String path = rs.getString("path");
+                double score = rs.getDouble("SCORE");
 
-                    if(score > thresholdScore) {
-                        String texts = rs.getString("extractedText");
-                        extractedTexts.put(path,texts);
-                        contentList.add(texts);
-                    }
-                    System.out.println(id);
-                    numOfResults++;
-                  }
-                  st.close();
-                  con.close();
+                if(score > thresholdScore) {
+                    String texts = rs.getString("extractedText");
+                    extractedTexts.put(path,texts);
+                    contentList.add(texts);
+                }
+                System.out.println(id);
+                numOfResults++;
               }
-            }
+              st.close();
+              con.close();
+          }
         }
         catch (SQLException s){
             System.out.println("SQL statement is not executed!");
@@ -128,7 +103,10 @@ public class FullTextSearch {
         return numOfResults;
     }
 
-    //stores the extracted text of the given path and returns true if storing is successful, false otherwise.
+    /*
+     * stores the extracted text of the given path and
+     * returns true if storing is successful, false otherwise.
+     */
     public boolean store(String path) {
         String content = "";
         boolean ok = false;
@@ -153,65 +131,4 @@ public class FullTextSearch {
         }
         return ok;
     }
-    
-    //to be tested
-    private String[] getSpellingSuggestions(String keyword) {
-        String[] suggestions = null;
-        try {
-            File dir = new File("D:/spellchecker/");
-            Directory directory = FSDirectory.open(dir);
-            SpellChecker spellChecker = new SpellChecker(directory);
-            spellChecker.indexDictionary(
-                 new PlainTextDictionary(new File("D:/fulldictionary00.txt")));
-            String wordForSuggestions = keyword;
-            int suggestionsNumber = 5;
-            suggestions = spellChecker.suggestSimilar(wordForSuggestions, suggestionsNumber);
-            if (suggestions!=null && suggestions.length>0) {
-                for (String word : suggestions) {
-                    System.out.println("Did you mean:" + word);
-                }
-            }
-            else {
-                System.out.println("No suggestions found for word:"+wordForSuggestions);
-            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        return suggestions;
-    }
-
-    //search also for the realted words or synonyms of the given keyword
-    public Hashtable getRelatedWords(String keyword) {
-        Hashtable<String, String[]> dictionary = new Hashtable();
-        rita.wordnet.RiWordnet wordnet = new rita.wordnet.RiWordnet();
-        String[] words = keyword.split(" ");
-        for(String s : words) {
-            if(wordnet.exists(s)) {
-                dictionary.put(s, wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword))); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang max search kay allsynonyms ang normal search kay allsynsets. :D
-            }
-            else{ //if it does not exist in wordnet, it may have not been spelled correctly
-                this.setSuggestions(this.getSpellingSuggestions(s));
-                //dictionary.put(s, );
-            }
-        }
-        return dictionary;
-    }
-
-
-//    private String[] getRelatedWords(String keyword) {
-//        rita.wordnet.RiWordnet wordnet = new rita.wordnet.RiWordnet(null);
-//        String[] words = keyword.split(" ");
-//        String[] synonyms = null;
-//        for(String s : words) {
-//            if(wordnet.exists(s)) {
-//                synonyms = wordnet.getAllSynonyms(s, wordnet.getBestPos(s)); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
-//            }
-//            else{
-//                synonyms = new String[1];
-//                synonyms[0] = keyword;
-//            }
-//        }
-//        return synonyms;
-//    }
 }

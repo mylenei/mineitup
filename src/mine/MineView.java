@@ -10,6 +10,8 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 
+import org.xeustechnologies.googleapi.spelling.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -43,7 +45,7 @@ public class MineView extends FrameView {
         lblSuggestions.setVisible(false);
 
         mine = new MineIt();
-        mine.populateDB();
+        mine.populateDB(false);
         myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
         texts = new LinkedHashMap();
         
@@ -135,10 +137,17 @@ public class MineView extends FrameView {
         btnBack = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         lblResults = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
         lblSuggestions = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        addDatasourceMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        reloadFormMenuItem = new javax.swing.JMenuItem();
+        refreshAllMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -196,11 +205,11 @@ public class MineView extends FrameView {
                         .addGap(270, 270, 270)
                         .addComponent(lblLogo))
                     .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addGap(537, 537, 537)
-                        .addComponent(btnSearch))
+                        .addGap(523, 523, 523)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addGap(419, 419, 419)
-                        .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(408, 408, 408)
+                        .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(359, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
@@ -209,10 +218,9 @@ public class MineView extends FrameView {
                 .addContainerGap()
                 .addComponent(lblLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(btnSearch)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
         );
 
         resultPanel.setBackground(resourceMap.getColor("resultPanel.background")); // NOI18N
@@ -257,9 +265,12 @@ public class MineView extends FrameView {
         lblResults.setName("lblResults"); // NOI18N
         jToolBar1.add(lblResults);
 
-        lblSuggestions.setBackground(resourceMap.getColor("lblSuggestions.background")); // NOI18N
-        lblSuggestions.setText(resourceMap.getString("lblSuggestions.text")); // NOI18N
-        lblSuggestions.setName("lblSuggestions"); // NOI18N
+        jButton1.setFont(resourceMap.getFont("btnUpload.font")); // NOI18N
+        jButton1.setText(resourceMap.getString("btnUpload.text")); // NOI18N
+        jButton1.setName("btnUpload"); // NOI18N
+
+        jTextField1.setText(resourceMap.getString("txtUpload.text")); // NOI18N
+        jTextField1.setName("txtUpload"); // NOI18N
 
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
@@ -269,33 +280,51 @@ public class MineView extends FrameView {
                 .addContainerGap()
                 .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(resultPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(resultPanelLayout.createSequentialGroup()
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(308, 308, 308)
-                        .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 775, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                .addGap(31, 31, 31))
+                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(resultPanelLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(resultPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addContainerGap())
         );
+
+        lblSuggestions.setBackground(resourceMap.getColor("lblSuggestions.background")); // NOI18N
+        lblSuggestions.setText(resourceMap.getString("lblSuggestions.text")); // NOI18N
+        lblSuggestions.setName("lblSuggestions"); // NOI18N
 
         javax.swing.GroupLayout scrollPanelLayout = new javax.swing.GroupLayout(scrollPanel);
         scrollPanel.setLayout(scrollPanelLayout);
         scrollPanelLayout.setHorizontalGroup(
             scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(scrollPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(resultPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(scrollPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(scrollPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resultPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(scrollPanelLayout.createSequentialGroup()
+                        .addGap(437, 437, 437)
+                        .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         scrollPanelLayout.setVerticalGroup(
@@ -303,7 +332,9 @@ public class MineView extends FrameView {
             .addGroup(scrollPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblSuggestions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addComponent(resultPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -329,12 +360,47 @@ public class MineView extends FrameView {
         fileMenu.setName("fileMenu"); // NOI18N
         fileMenu.setMnemonic('F');
 
+        addDatasourceMenuItem.setText(resourceMap.getString("addDatasourceMenuItem.text")); // NOI18N
+        addDatasourceMenuItem.setName("addDatasourceMenuItem"); // NOI18N
+        addDatasourceMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addDatasourceMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(addDatasourceMenuItem);
+
+        jSeparator1.setName("jSeparator1"); // NOI18N
+        fileMenu.add(jSeparator1);
+
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mine.MineApp.class).getContext().getActionMap(MineView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
         fileMenu.add(exitMenuItem);
 
         menuBar.add(fileMenu);
+
+        jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
+        jMenu1.setName("jMenu1"); // NOI18N
+
+        reloadFormMenuItem.setText(resourceMap.getString("reloadFormMenuItem.text")); // NOI18N
+        reloadFormMenuItem.setName("reloadFormMenuItem"); // NOI18N
+        reloadFormMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reloadFormMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(reloadFormMenuItem);
+
+        refreshAllMenuItem.setText(resourceMap.getString("refreshAllMenuItem.text")); // NOI18N
+        refreshAllMenuItem.setName("refreshAllMenuItem"); // NOI18N
+        refreshAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshAllMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(refreshAllMenuItem);
+
+        menuBar.add(jMenu1);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
@@ -391,37 +457,45 @@ public class MineView extends FrameView {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         btnSearch.setEnabled(false);
-        if(!searched) {                                             //resetting the locations of the logo, textfield and button
-            ClassLoader cldr = this.getClass().getClassLoader();
-            java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
-            ImageIcon icon = new ImageIcon(imageURL);
-            this.lblLogo.setIcon(icon);
-            this.lblLogo.setSize(icon.getIconWidth(), icon.getIconHeight());
-            this.lblLogo.setLocation(10, 10);
-            this.txtKeyword.setLocation(300,30);
-            this.btnSearch.setLocation(420,70);
-            this.mainPanel.repaint();
-            searched = true;
-        }
-        if(!txtKeyword.getText().trim().equals("")) {
-            FullTextSearch fts = new FullTextSearch();
-            fts.search(txtKeyword.getText().trim());
-            String[] sg = fts.getSuggestions();
-            if(sg != null) {
-                System.out.println("@@@@@@@@"  + sg.length + "@@@@@@@@@");
-                for(String s : sg) {
-                    lblSuggestions.setText(lblSuggestions.getText() + " " + s + "\t");
-                    lblSuggestions.setVisible(true);
+        
+        if(!txtKeyword.getText().trim().equals("")) { //if keyword is entered
+            lblSuggestions.setText("Did you mean: ");
+            KeywordProcessor kprocess = new KeywordProcessor();
+            if(!kprocess.spellCheck(txtKeyword.getText().trim())) { //if spelling is wrong, suggest words
+                SpellCorrection[] suggestions = kprocess.getSpellingSuggestions(txtKeyword.getText().trim());
+                if(suggestions != null) {
+                    for(SpellCorrection sc : suggestions) {
+                        String[] s = sc.getWords();
+                        lblSuggestions.setText(lblSuggestions.getText() + " " + s[0] + "\t");
+                        lblSuggestions.setVisible(true);
+                    }
                 }
             }
-            texts = fts.getExtractedTexts();
-            keyI = texts.keySet().iterator();
-            valueIterator = fts.getContentList().listIterator();
-            displayInitialResult();
-            resultPanel.setVisible(true);
-            rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
-            String[] words = text.getWords();
-            highlight(txtPaneResult, words);
+            //else {
+                if(!searched) {                                             //resetting the locations of the logo, textfield and button
+                    ClassLoader cldr = this.getClass().getClassLoader();
+                    java.net.URL imageURL = cldr.getResource("mine/resources/mineItUp2.JPG");
+                    ImageIcon icon = new ImageIcon(imageURL);
+                    this.lblLogo.setIcon(icon);
+                    this.lblLogo.setSize(icon.getIconWidth(), icon.getIconHeight());
+                    this.lblLogo.setLocation(10, 10);
+                    this.txtKeyword.setLocation(300,30);
+                    this.btnSearch.setLocation(420,70);
+                    this.mainPanel.repaint();
+                    searched = true;
+                }
+                FullTextSearch fts = new FullTextSearch();
+                fts.search(txtKeyword.getText().trim());
+                texts = fts.getExtractedTexts();
+                keyI = texts.keySet().iterator();
+                valueIterator = fts.getContentList().listIterator();
+                displayInitialResult();
+                resultPanel.setVisible(true);
+                rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
+                String[] words = text.getWords();
+                highlight(txtPaneResult, words);
+
+           // }
         }        
         btnSearch.setEnabled(true);
     }//GEN-LAST:event_btnSearchActionPerformed
@@ -468,6 +542,25 @@ public class MineView extends FrameView {
             highlight(txtPaneResult, words);
        }
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void reloadFormMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadFormMenuItemActionPerformed
+        scrollPanel.repaint();
+    }//GEN-LAST:event_reloadFormMenuItemActionPerformed
+
+    /*
+     * updates the local copy of the data source
+     */
+    private void refreshAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshAllMenuItemActionPerformed
+        mine.populateDB(true);
+    }//GEN-LAST:event_refreshAllMenuItemActionPerformed
+
+    /*
+     * asks the user for a path to the data source and adds that data source to the DB
+     */
+    private void addDatasourceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDatasourceMenuItemActionPerformed
+        String input = javax.swing.JOptionPane.showInputDialog(null, "Input the path to the datasource \n(MS Docs, PDF files, URL of a blog) \nyou want to add in the DB.");
+        javax.swing.JOptionPane.showMessageDialog(null, input);
+    }//GEN-LAST:event_addDatasourceMenuItemActionPerformed
 
     // Creates highlights around all occurrences of pattern in textComp
     public void highlight(JTextComponent textComp, String pattern) {
@@ -549,12 +642,17 @@ public class MineView extends FrameView {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem addDatasourceMenuItem;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel headerPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblResults;
@@ -562,6 +660,8 @@ public class MineView extends FrameView {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JMenuItem refreshAllMenuItem;
+    private javax.swing.JMenuItem reloadFormMenuItem;
     private javax.swing.JPanel resultPanel;
     private javax.swing.JPanel scrollPanel;
     private javax.swing.JLabel statusAnimationLabel;

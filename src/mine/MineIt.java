@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import rita.wordnet.*;
 
 /**
- *
+ * Definition: class responsible for data mining, specifically, connecting to the DB and many other DB operations. =)
  * @author wella
  */
 public class MineIt {
@@ -53,19 +53,6 @@ public class MineIt {
         this.reader = reader;
     }
 
-//    private String[] getRelatedWords(String keyword) {
-//        RiWordnet wordnet = new RiWordnet(null);
-//        String[] synonyms;
-//        if(wordnet.exists(keyword)) {
-//            synonyms = wordnet.getAllSynonyms(keyword, wordnet.getBestPos(keyword)); //magbutang lang siguro ug para option sa user noh like max search or normal search. ang mas search kay allsynonyms ang normal search kay allsynsets. :D
-//        }
-//        else{
-//            synonyms = new String[1];
-//            synonyms[0] = keyword;
-//        }
-//        return synonyms;
-//    }
-
     private boolean storeContentsInDB(int id, String content) {
         boolean ok = false;
         Connection conn = null;
@@ -75,6 +62,8 @@ public class MineIt {
             Statement statement = conn.createStatement();
             String sql = "UPDATE datasources SET extractedText = \'" + content + "\' WHERE id = " + id;
             statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
             ok = true;
         }
         catch (SQLException e) {
@@ -106,14 +95,16 @@ public class MineIt {
             content = reader.readWebText(path);
         }
         if(!content.equals("")) {
-            content = content.replaceAll("'", "''");
             ok = true;
         }
         return ok;
     }
 
-    //extracting the path from the database, exract and writetoFile are called here
-    public void populateDB() {
+    /*
+     * extracting the path from the database
+     * if arg is true, the db is updated/reloaded
+     */
+    public void populateDB(boolean refresh) {
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
@@ -128,7 +119,8 @@ public class MineIt {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
                 String content = rs.getString("extractedText");
-                if(content == null) {
+                content = content.replaceAll("'", "`");
+                if(content == null || refresh) {
                     if(extract(id, path)) {
                         storeContentsInDB(id, content);
                     }
