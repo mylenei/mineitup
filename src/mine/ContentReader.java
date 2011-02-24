@@ -26,12 +26,34 @@ import org.htmlparser.parserapplications.*;
 import org.htmlparser.util.ParserException;
 import java.io.*;
 import java.util.*;
+
 /**
- *
+ * Definition: Reads MS Word documents, MS Excel documents, MS Powerpoint documents, *.txt files, PDF files and Website/blog contents
  * @author wella
  */
 public class ContentReader {
-    //reads *.doc and *.docx
+    /**
+     * File reader for *.txt
+     */
+    public String readTxtFile(String filename) {
+        StringBuffer sb = new StringBuffer(100);
+        try {
+            FileReader fr = new FileReader(filename);
+            int i = 0;
+            while((i = fr.read()) != -1) {
+                sb.append((char)i);
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * MS Word document reader
+     * Reads *.doc and *.docx
+     */
     public String readDocFile(String filename) {
         String content = "";
         File file = new File(filename);
@@ -57,7 +79,10 @@ public class ContentReader {
         return content;
     }
 
-    //reads *.pdf files
+    /**
+     * PDF File reader
+     * Reads *.pdf files
+     */
     public String readPDFFile(String filename) {
         String content = "";
         try {
@@ -72,7 +97,10 @@ public class ContentReader {
         return content;
     }
 
-    //reads *.ppt and *.pptx
+    /**
+     * MS Powerpoint reader
+     * Reads *.ppt and *.pptx
+     */
     public String readPPTFile(String filename) {
         String content = "";
         File file = new File(filename);
@@ -95,7 +123,10 @@ public class ContentReader {
         return content;
      }
 
-    //reads *.xls and *.xlsx files
+    /**
+     * MS Excel reader
+     * Reads *.xls and *.xlsx files
+     */
      public String readExcelFile(String filename) {
         String content = "";
         if(filename.endsWith(".xls")) {
@@ -107,7 +138,10 @@ public class ContentReader {
         return content;
      }
 
-     public String readExcel2007(String s) {
+     /**
+      * Helper fucntion that reads MS Excel 2007
+      */
+     private String readExcel2007(String s) {
         String content = "";
         try {
             Workbook wb = new XSSFWorkbook(s);
@@ -138,7 +172,10 @@ public class ContentReader {
         return content;
     }
 
-     public String readExcel2003(String s) {
+     /**
+      * Helper function that reads MS Excel 2003
+      */
+     private String readExcel2003(String s) {
          String content = "";
          try {
             HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(s));
@@ -168,7 +205,10 @@ public class ContentReader {
          return content;
      }
 
-     //Extract plaintext strings from a web page
+     /**
+      * Website/blog text reader
+      * Extract plaintext strings from a web page
+      */
      public String readWebText(String source) {
         String text = "";
         StringExtractor sExt = new StringExtractor(source);

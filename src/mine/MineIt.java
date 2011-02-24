@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ArrayList;
-import rita.wordnet.*;
 
 /**
  * Definition: class responsible for data mining, specifically, connecting to the DB and many other DB operations. =)
@@ -53,14 +52,17 @@ public class MineIt {
         this.reader = reader;
     }
 
+    /**
+     * Store contents in DB if content is still null
+     */
     private boolean storeContentsInDB(int id, String content) {
         boolean ok = false;
         Connection conn = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
             Statement statement = conn.createStatement();
-            String sql = "UPDATE datasources SET extractedText = \'" + content + "\' WHERE id = " + id;
+            String sql = "UPDATE " + DBAccountInfo.TABLE_NAME + " SET extractedText = \'" + content + "\' WHERE id = " + id;
             statement.executeUpdate(sql);
             statement.close();
             conn.close();
@@ -75,7 +77,9 @@ public class MineIt {
         return ok;
     }
 
-    //extract the contents to be written
+    /** 
+     * extract the contents to be written
+     */
     private boolean extract(int id, String path) {
         String content = "";
         boolean ok = false;
@@ -91,16 +95,23 @@ public class MineIt {
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
         }
+        else if(path.endsWith(".txt")) {
+            content = reader.readTxtFile(path);
+        }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
         }
         if(!content.equals("")) {
+            if(content.contains("'")){
+                content = content.replaceAll("'", "`");
+            }
+            storeContentsInDB(id, content);
             ok = true;
         }
         return ok;
     }
 
-    /*
+    /**
      * extracting the path from the database
      * if arg is true, the db is updated/reloaded
      */
@@ -108,10 +119,10 @@ public class MineIt {
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
+          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
           if(!con.isClosed()) {
               System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              String query = "SELECT * FROM datasources";
+              String query = "SELECT * FROM " + DBAccountInfo.TABLE_NAME;
               Statement st = con.createStatement();                     //creates the java statement
               ResultSet rs = st.executeQuery(query);                    // execute the query, and get a java resultset
               while (rs.next())                                         // iterate through the java resultset
@@ -119,11 +130,8 @@ public class MineIt {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
                 String content = rs.getString("extractedText");
-                content = content.replaceAll("'", "`");
-                if(content == null || refresh) {
-                    if(extract(id, path)) {
-                        storeContentsInDB(id, content);
-                    }
+                if(content == null) {
+                    extract(id, path);
                 }
                 else {
                     //check if equal ba sila, if not, update the value of extractedtext
@@ -139,5 +147,30 @@ public class MineIt {
         catch (Exception e){
           e.printStackTrace();
         }
+    }
+
+    /**
+     * inserts the path into the DB. use in adding datasource.
+     */
+    public boolean insertPath(String path) {
+        boolean ok = false;
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path) VALUES('" + path + "')";
+            statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+            ok = true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ok;
     }
 }

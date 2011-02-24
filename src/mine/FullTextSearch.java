@@ -58,20 +58,20 @@ public class FullTextSearch {
         this.reader = reader;
     }
 
-    /*
-     * returns the number of search results
+    /**
+     * Does a maximum search by searching the related words also
      */
-    public int search(String keyword) {
+    public int doMaxSearch(String keyword) {
         int numOfResults = 0;
         extractedTexts.clear();
         Connection con = null;
         try {
           Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mineitup","root","1234");
+          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
           if(!con.isClosed()) {
               String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
-                      + "FROM datasources WHERE MATCH(path,extractedText) AGAINST"
+                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,extractedText) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
               Statement st = con.createStatement();                      //creates the java statement
               ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
@@ -103,7 +103,52 @@ public class FullTextSearch {
         return numOfResults;
     }
 
-    /*
+    /**
+     * returns the number of search results
+     */
+    public int search(String keyword) {
+        int numOfResults = 0;
+        extractedTexts.clear();
+        Connection con = null;
+        try {
+          Class.forName("com.mysql.jdbc.Driver");
+          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
+          if(!con.isClosed()) {
+              String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
+                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,extractedText) AGAINST"
+                      + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
+              Statement st = con.createStatement();                      //creates the java statement
+              ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
+              while (rs.next())                                          // iterate through the java resultset
+              {
+                int id = rs.getInt("id");
+                String path = rs.getString("path");
+                double score = rs.getDouble("SCORE");
+
+                if(score > thresholdScore) {
+                    String texts = rs.getString("extractedText");
+                    extractedTexts.put(path,texts);
+                    contentList.add(texts);
+                }
+                System.out.println(id);
+                numOfResults++;
+              }
+              st.close();
+              con.close();
+          }
+        }
+        catch (SQLException s){
+            System.out.println("SQL statement is not executed!");
+            System.out.println(s.getMessage());
+        }
+        catch (Exception e){
+          e.printStackTrace();
+        }
+        return numOfResults;
+    }
+
+    /**
      * stores the extracted text of the given path and
      * returns true if storing is successful, false otherwise.
      */
@@ -121,6 +166,9 @@ public class FullTextSearch {
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
+        }
+        else if(path.endsWith(".txt")) {
+            content = reader.readTxtFile(path);
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);

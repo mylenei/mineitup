@@ -16,7 +16,7 @@ import org.xeustechnologies.googleapi.spelling.*;
 public class KeywordProcessor {
     public KeywordProcessor() {}
 
-    /*
+    /**
      * checks if the spelling of the words of the keyword is correct
      */
     public boolean spellCheck(String keyword) {
@@ -34,7 +34,7 @@ public class KeywordProcessor {
         return ok;
     }
 
-    /*
+    /**
      * returns null if spelling is correct, otherwise returns the suggested spelling
      */
     public SpellCorrection[] getSpellingSuggestions(String keyword) {
@@ -44,7 +44,7 @@ public class KeywordProcessor {
         return corrections;
     }
 
-    /*
+    /**
      * search also for the related words or synonyms of the given keyword
      * this is through the help of wordnet
      * returns a hashtable with the key being the keyword and the value being the similar words

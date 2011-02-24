@@ -130,6 +130,7 @@ public class MineView extends FrameView {
         lblLogo = new javax.swing.JLabel();
         txtKeyword = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
         resultPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtPaneResult = new javax.swing.JTextPane();
@@ -195,6 +196,9 @@ public class MineView extends FrameView {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Max Search", "Normal Search", "Min Search", "Boolean Search" }));
+        jComboBox1.setName("jComboBox1"); // NOI18N
+
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
@@ -209,7 +213,9 @@ public class MineView extends FrameView {
                         .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(headerPanelLayout.createSequentialGroup()
                         .addGap(408, 408, 408)
-                        .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(359, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
@@ -218,7 +224,9 @@ public class MineView extends FrameView {
                 .addContainerGap()
                 .addComponent(lblLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
         );
@@ -489,6 +497,7 @@ public class MineView extends FrameView {
                 texts = fts.getExtractedTexts();
                 keyI = texts.keySet().iterator();
                 valueIterator = fts.getContentList().listIterator();
+                ctr = 0;
                 displayInitialResult();
                 resultPanel.setVisible(true);
                 rita.RiString text = new rita.RiString(txtKeyword.getText().trim());// + new rita.RiStemmer().stem(txtKeyword.getText().trim()));
@@ -559,10 +568,12 @@ public class MineView extends FrameView {
      */
     private void addDatasourceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDatasourceMenuItemActionPerformed
         String input = javax.swing.JOptionPane.showInputDialog(null, "Input the path to the datasource \n(MS Docs, PDF files, URL of a blog) \nyou want to add in the DB.");
-        javax.swing.JOptionPane.showMessageDialog(null, input);
+        mine.insertPath(input);
     }//GEN-LAST:event_addDatasourceMenuItemActionPerformed
 
-    // Creates highlights around all occurrences of pattern in textComp
+    /*
+     * Creates highlights around all occurrences of pattern in textComp
+     */
     public void highlight(JTextComponent textComp, String pattern) {
         removeHighlights(textComp);                                                    // First remove all old highlights
         try {
@@ -582,7 +593,10 @@ public class MineView extends FrameView {
         } catch (BadLocationException e) {
         }
     }
-    // Creates highlights around all occurrences of pattern in textComp
+
+    /*
+     * Creates highlights around all occurrences of pattern in textComp
+     */
     public void highlight(JTextComponent textComp, String[] pattern) {
         removeHighlights(textComp);                                                    // First remove all old highlights
         try {
@@ -622,7 +636,9 @@ public class MineView extends FrameView {
         }
     }
 
-    // Removes only our private highlights
+    /*
+     * Removes only our private highlights
+     */
     public void removeHighlights(JTextComponent textComp) {
         Highlighter hilite = textComp.getHighlighter();
         Highlighter.Highlight[] hilites = hilite.getHighlights();
@@ -634,7 +650,9 @@ public class MineView extends FrameView {
         }
     }
 
-    // A private subclass of the default highlight painter
+    /*
+     * A private subclass of the default highlight painter
+     */
     class MyHighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {
         public MyHighlightPainter(Color color) {
             super(color);
@@ -648,6 +666,7 @@ public class MineView extends FrameView {
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
