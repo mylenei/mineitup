@@ -18,12 +18,14 @@ public class FullTextSearch {
     private LinkedHashMap extractedTexts;
     private LinkedList contentList;
     private ContentReader reader;
+    private KeywordProcessor kprocess;
     private double thresholdScore = 0.20;
 
     public FullTextSearch() {
         extractedTexts = new LinkedHashMap();
         contentList = new LinkedList<String>();
         reader = new ContentReader();
+        kprocess = new KeywordProcessor();
     }
 
     public double getThresholdScore() {
@@ -163,6 +165,9 @@ public class FullTextSearch {
         }
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
+        }
+        else if(path.endsWith(".odt") || path.endsWith(".odf") || path.endsWith(".ods")) {
+            content = reader.readODFFile(path);
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);

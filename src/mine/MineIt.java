@@ -95,6 +95,9 @@ public class MineIt {
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
         }
+        else if(path.endsWith(".odt") || path.endsWith(".odf") || path.endsWith(".ods")) {
+            content = reader.readODFFile(path);
+        }
         else if(path.endsWith(".txt")) {
             content = reader.readTxtFile(path);
         }
