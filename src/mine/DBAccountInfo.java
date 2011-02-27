@@ -6,17 +6,24 @@
 package mine;
 
 import java.io.*;
+
 /**
- *
+ * Definition: Class that manipulates/accesses the database account info
  * @author wella
  */
 public class DBAccountInfo {
     protected static String TABLE_NAME = "datasources";
     protected static String USER_NAME = "root";
-    protected static String PASSWORD = "1234";
+    protected static String PASSWORD = "";
     protected static String DB_NAME = "mineitup";
+    protected static String COL_NAME0 = "id";
+    protected static String COL_NAME1 = "path";
+    protected static String COL_NAME2 = "content";
     private String filename = "src/db_account_info.txt";
-    
+
+    /**
+     * Reads the database account information from a file
+     */
     private String readDbAccountInfo() {
         StringBuffer sb = new StringBuffer(100);
         try {
@@ -32,6 +39,10 @@ public class DBAccountInfo {
         return sb.toString();
     }
 
+    /**
+     * Sets the database account info.
+     * It's fortunate that we know the format of the file. ha-ha
+     */
     public void setDBInfo() {
         String info = readDbAccountInfo();
         String[] infos = info.split("\n");              //splits line by line

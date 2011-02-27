@@ -20,6 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.text.*;
+import javax.swing.JOptionPane;
 import java.awt.Color;
 
 import java.util.ArrayList;
@@ -545,8 +546,19 @@ public class MineView extends FrameView {
      * asks the user for a path to the data source and adds that data source to the DB
      */
     private void addDatasourceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDatasourceMenuItemActionPerformed
-        Filechooser choice = new Filechooser(this.getFrame(),true);
-        javax.swing.JOptionPane.showMessageDialog(null, choice.getPath());
+        Filechooser choice = new Filechooser(this.getFrame(),true);//javax.swing.JOptionPane.showMessageDialog(null, choice.getPath());
+        int result = JOptionPane.showConfirmDialog(null, "Insert the path and the file contents to the DB?");
+        if(result == JOptionPane.OK_OPTION) {
+           if(mine.addDataSource(choice.getPath())) {
+                JOptionPane.showMessageDialog(null, "You have successfully added a data source", "Success", JOptionPane.INFORMATION_MESSAGE);
+           }
+           else{
+                JOptionPane.showMessageDialog(null, "Adding datasource failed!", "Error", JOptionPane.ERROR_MESSAGE);
+           }
+        }
+        else  {
+            JOptionPane.showMessageDialog(null, "You choose to cancel the operation of adding a datasource");
+        }
     }//GEN-LAST:event_addDatasourceMenuItemActionPerformed
 
     /*

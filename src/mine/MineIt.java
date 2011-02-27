@@ -152,31 +152,6 @@ public class MineIt {
         }
     }
 
-    /**
-     * inserts the path into the DB. use in adding datasource.
-     */
-    public boolean insertPath(String path) {
-        boolean ok = false;
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
-            Statement statement = conn.createStatement();
-            String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path) VALUES('" + path + "')";
-            statement.executeUpdate(sql);
-            statement.close();
-            conn.close();
-            ok = true;
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ok;
-    }
-
     public boolean addDataSource(String path) {
         boolean ok = false;
         Connection conn = null;
