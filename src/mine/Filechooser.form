@@ -45,7 +45,7 @@
       <Properties>
         <Property name="dialogTitle" type="java.lang.String" resourceKey="filechooser.dialogTitle"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new FileNameExtensionFilter(&quot;Documents&quot;, &quot;doc&quot;, &quot;docx&quot;)" type="code"/>
+          <Connection code="new FileNameExtensionFilter(&quot;Documents&quot;, &quot;doc&quot;, &quot;docx&quot;, &quot;xls&quot;, &quot;xlsx&quot;, &quot;ppt&quot;, &quot;pptx&quot;, &quot;odt&quot;, &quot;odp&quot;, &quot;ods&quot;, &quot;pdf&quot;, &quot;txt&quot;)" type="code"/>
         </Property>
         <Property name="name" type="java.lang.String" value="filechooser" noResource="true"/>
       </Properties>

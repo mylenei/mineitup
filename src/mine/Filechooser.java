@@ -51,7 +51,7 @@ public class Filechooser extends javax.swing.JDialog {
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mine.MineApp.class).getContext().getResourceMap(Filechooser.class);
         filechooser.setDialogTitle(resourceMap.getString("filechooser.dialogTitle")); // NOI18N
-        filechooser.setFileFilter(new FileNameExtensionFilter("Documents", "doc", "docx"));
+        filechooser.setFileFilter(new FileNameExtensionFilter("Documents", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "odp", "ods", "pdf", "txt"));
         filechooser.setName("filechooser"); // NOI18N
         filechooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -19,6 +19,7 @@ public class FullTextSearch {
     private LinkedList contentList;
     private ContentReader reader;
     private KeywordProcessor kprocess;
+    private MineIt mine;
     private double thresholdScore = 0.20;
 
     public FullTextSearch() {
@@ -26,6 +27,7 @@ public class FullTextSearch {
         contentList = new LinkedList<String>();
         reader = new ContentReader();
         kprocess = new KeywordProcessor();
+        mine = new MineIt();
     }
 
     public double getThresholdScore() {
@@ -63,90 +65,59 @@ public class FullTextSearch {
     /**
      * Does a maximum search by searching the related words also
      */
-    public int doMaxSearch(String keyword) {
+    public int doMaxSearch(String keyword) throws SQLException {
         int numOfResults = 0;
         extractedTexts.clear();
-        Connection con = null;
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
-          if(!con.isClosed()) {
-              String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+        String query = "SELECT id,path,cotent, MATCH(path,content) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
-                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,extractedText) AGAINST"
+                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,content) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
-              Statement st = con.createStatement();                      //creates the java statement
-              ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
-              while (rs.next())                                          // iterate through the java resultset
-              {
-                int id = rs.getInt("id");
-                String path = rs.getString("path");
-                double score = rs.getDouble("SCORE");
-
-                if(score > thresholdScore) {
-                    String texts = rs.getString("extractedText");
-                    extractedTexts.put(path,texts);
-                    contentList.add(texts);
-                }
-                System.out.println(id);
-                numOfResults++;
-              }
-              st.close();
-              con.close();
-          }
+        ResultSet rs = mine.selectQuery(query);                   // execute the query, and get a java resultset
+        while (rs.next())                                          // iterate through the java resultset
+        {
+            int id = rs.getInt("id");
+            String path = rs.getString("path");
+            double score = rs.getDouble("SCORE");
+            if(score > thresholdScore) {
+                String texts = rs.getString("content");
+                extractedTexts.put(path,texts);
+                contentList.add(texts);
+            }
+            System.out.println(id);
+            numOfResults++;
         }
-        catch (SQLException s){
-            System.out.println("SQL statement is not executed!");
-            System.out.println(s.getMessage());
-        }
-        catch (Exception e){
-          e.printStackTrace();
-        }
+  
         return numOfResults;
     }
 
     /**
      * returns the number of search results
      */
-    public int search(String keyword) {
+    public int search(String keyword) throws SQLException {
         int numOfResults = 0;
         extractedTexts.clear();
-        Connection con = null;
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
-          if(!con.isClosed()) {
-              String query = "SELECT id,path,extractedText, MATCH(path,extractedText) AGAINST"
+        String query = "SELECT id,path,cotent, MATCH(path,content) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE) AS SCORE "
-                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,extractedText) AGAINST"
+                      + "FROM " + DBAccountInfo.TABLE_NAME + " WHERE MATCH(path,content) AGAINST"
                       + "('" + keyword + "' IN NATURAL LANGUAGE MODE)";
-              Statement st = con.createStatement();                      //creates the java statement
-              ResultSet rs = st.executeQuery(query);                     // execute the query, and get a java resultset
-              while (rs.next())                                          // iterate through the java resultset
-              {
+        ResultSet rs = mine.selectQuery(query);                   // execute the query, and get a java resultset
+        try {
+            while (rs.next())                                          // iterate through the java resultset
+            {
                 int id = rs.getInt("id");
                 String path = rs.getString("path");
                 double score = rs.getDouble("SCORE");
-
                 if(score > thresholdScore) {
-                    String texts = rs.getString("extractedText");
+                    String texts = rs.getString("content");
                     extractedTexts.put(path,texts);
                     contentList.add(texts);
                 }
                 System.out.println(id);
                 numOfResults++;
-              }
-              st.close();
-              con.close();
-          }
-        }
-        catch (SQLException s){
-            System.out.println("SQL statement is not executed!");
-            System.out.println(s.getMessage());
-        }
-        catch (Exception e){
-          e.printStackTrace();
-        }
+            }
+        } 
+        catch(SQLException e) {e.printStackTrace();}
+        catch(Exception e) {e.printStackTrace();}
         return numOfResults;
     }
 
@@ -166,7 +137,7 @@ public class FullTextSearch {
         else if(path.endsWith(".ppt") || path.endsWith(".pptx")) {
             content = reader.readPPTFile(path);
         }
-        else if(path.endsWith(".odt") || path.endsWith(".odf") || path.endsWith(".ods")) {
+        else if(path.endsWith(".odt") || path.endsWith(".odp") || path.endsWith(".ods")) {
             content = reader.readODFFile(path);
         }
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {

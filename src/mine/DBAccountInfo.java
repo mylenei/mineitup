@@ -19,6 +19,7 @@ public class DBAccountInfo {
     protected static String COL_NAME0 = "id";
     protected static String COL_NAME1 = "path";
     protected static String COL_NAME2 = "content";
+ 
     private String filename = "src/db_account_info.txt";
 
     /**

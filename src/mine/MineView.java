@@ -4,6 +4,9 @@
 
 package mine;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -22,7 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.text.*;
 import javax.swing.JOptionPane;
 import java.awt.Color;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Iterator;
@@ -46,7 +49,7 @@ public class MineView extends FrameView {
         lblSuggestions.setVisible(false);
 
         mine = new MineIt();
-        mine.populateDB(false);
+   
         myHighlightPainter = new MyHighlightPainter(Color.yellow);        // An instance of the private subclass of the default highlight painter
         texts = new LinkedHashMap();
         
@@ -472,7 +475,11 @@ public class MineView extends FrameView {
                     searched = true;
                 }
                 FullTextSearch fts = new FullTextSearch();
-                fts.search(txtKeyword.getText().trim());
+                try {
+                    fts.search(txtKeyword.getText().trim());
+                } catch (SQLException ex) {
+                    Logger.getLogger(MineView.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 texts = fts.getExtractedTexts();
                 keyI = texts.keySet().iterator();
                 valueIterator = fts.getContentList().listIterator();
@@ -539,7 +546,7 @@ public class MineView extends FrameView {
      * updates the local copy of the data source
      */
     private void refreshAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshAllMenuItemActionPerformed
-        mine.populateDB(true);
+        //mine.reloadContents();
     }//GEN-LAST:event_refreshAllMenuItemActionPerformed
 
     /*
@@ -549,8 +556,10 @@ public class MineView extends FrameView {
         Filechooser choice = new Filechooser(this.getFrame(),true);//javax.swing.JOptionPane.showMessageDialog(null, choice.getPath());
         int result = JOptionPane.showConfirmDialog(null, "Insert the path and the file contents to the DB?");
         if(result == JOptionPane.OK_OPTION) {
-           if(mine.addDataSource(choice.getPath())) {
-                JOptionPane.showMessageDialog(null, "You have successfully added a data source", "Success", JOptionPane.INFORMATION_MESSAGE);
+           String path = choice.getPath();
+           path = path.replace("\\", "/");
+           if(mine.addDataSource(path) != -1) {
+                JOptionPane.showMessageDialog(null, "You have successfully added a data source \n" + path, "Success", JOptionPane.INFORMATION_MESSAGE);
            }
            else{
                 JOptionPane.showMessageDialog(null, "Adding datasource failed!", "Error", JOptionPane.ERROR_MESSAGE);

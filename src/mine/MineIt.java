@@ -51,38 +51,13 @@ public class MineIt {
     public void setReader(ContentReader reader) {
         this.reader = reader;
     }
-
-    /**
-     * Store contents in DB if content is still null
-     */
-    private boolean storeContentsInDB(int id, String content) {
-        boolean ok = false;
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
-            Statement statement = conn.createStatement();
-            String sql = "UPDATE " + DBAccountInfo.TABLE_NAME + " SET extractedText = \'" + content + "\' WHERE id = " + id;
-            statement.executeUpdate(sql);
-            statement.close();
-            conn.close();
-            ok = true;
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ok;
-    }
-
+    
     /** 
      * extract the contents to be written
      */
     private String extract(String path) {
         String content = "";
-        boolean ok = false;
+        
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
             content = reader.readDocFile(path);
         }
@@ -95,7 +70,7 @@ public class MineIt {
         else if(path.endsWith(".pdf") && !path.startsWith("http")) {
             content = reader.readPDFFile(path);
         }
-        else if(path.endsWith(".odt") || path.endsWith(".odf") || path.endsWith(".ods")) {
+        else if(path.endsWith(".odt") || path.endsWith(".odp") || path.endsWith(".ods")) {
             content = reader.readODFFile(path);
         }
         else if(path.endsWith(".txt")) {
@@ -103,68 +78,25 @@ public class MineIt {
         }
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
-        }
-        
+        }        
         return content;
     }
 
     /**
-     * extracting the path from the database
-     * if arg is true, the db is updated/reloaded
+     * Performs select query
+     * @param sql statement
+     * @return ResultSet
      */
-    public void populateDB(boolean refresh) {
-        Connection con = null;
-        try {
-          Class.forName("com.mysql.jdbc.Driver");
-          con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
-          if(!con.isClosed()) {
-              System.out.println("Successfully connected to MySQL server using TCP/IP...");
-              String query = "SELECT * FROM " + DBAccountInfo.TABLE_NAME;
-              Statement st = con.createStatement();                     //creates the java statement
-              ResultSet rs = st.executeQuery(query);                    // execute the query, and get a java resultset
-              while (rs.next())                                         // iterate through the java resultset
-              {
-                int id = rs.getInt("id");
-                String path = rs.getString("path");
-                String content = rs.getString("extractedText");
-                if(content == null) {
-                    String contentRead = extract(path);
-                    if(!contentRead.equals("")) {
-                        if(contentRead.contains("'")){
-                            contentRead = contentRead.replaceAll("'", "`");
-                        }
-                        storeContentsInDB(id, contentRead);
-                    }
-                }
-                else {
-                    //check if equal ba sila, if not, update the value of extractedtext
-                }
-              }
-              st.close();
-              con.close();
-            }
-        }
-        catch (SQLException s){
-            System.out.println("SQL statement is not executed!");
-        }
-        catch (Exception e){
-          e.printStackTrace();
-        }
-    }
-
-    public boolean addDataSource(String path) {
-        boolean ok = false;
+    public ResultSet selectQuery(String sql) {
         Connection conn = null;
-        String content = this.extract(path);
+        ResultSet rs = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
             Statement statement = conn.createStatement();
-            String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path, content) VALUES('" + path + "','" + content + "')";
-            statement.executeUpdate(sql);
+            rs = statement.executeQuery(sql);
             statement.close();
             conn.close();
-            ok = true;
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -172,6 +104,96 @@ public class MineIt {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return ok;
+        return rs;
+    }
+
+    /**
+     * Performs update (or insert) query
+     * @param sql statement
+     * @return returns the number of rows being affected by the update. -1 if update occurs
+     */
+    public int updateQuery(String sql) {
+        Connection conn = null;
+        int res = -1;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
+            Statement statement = conn.createStatement();
+            res = statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * Adds entry to the database
+     * @param path chosen by the user
+     */
+    public int addDataSource(String path) {
+        String content = this.extract(path);
+        content = content.replaceAll("'", "`");
+        String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path, content) VALUES('" + path + "','" + content + "')";
+        int res = this.updateQuery(sql);
+        return res;
+    }
+
+    /**
+     * Refreshes/reloads/updates the content in the DB
+     * @return returns number of rows updated. -1 if update fails.
+     */
+    private int reload(int id, String content) {
+        int res = -1;
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
+            Statement statement = conn.createStatement();
+            String sql = "UPDATE " + DBAccountInfo.TABLE_NAME + " SET content = \'" + content + "\' WHERE id = " + id;
+            res = statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * Iterates through the rows of the DB and updates the content
+     * @return returns the number of rows being updated
+     */
+    public int reloadContents() throws SQLException {
+        int res = 0;
+        String select = "SELECT * FROM " + DBAccountInfo.TABLE_NAME;
+        String content = "";
+        ResultSet rs = this.selectQuery(select);
+        while(rs.next()) {
+            content = this.extract(rs.getString("path"));
+            this.reload(rs.getInt("id"), content);
+            res++;
+        }
+        return res;
+    }
+
+    /**
+     * Counts the number of entries in the DB
+     */
+    private int countDBEntry() throws SQLException {
+        int res = 0;
+        String sql = "SELECT count(*) from " + DBAccountInfo.TABLE_NAME;
+        ResultSet rs = this.selectQuery(sql);
+        res = rs.getInt(1);
+        return res;
     }
 }

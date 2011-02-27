@@ -311,7 +311,6 @@ public class ContentReader {
                 break;
             }
         }
-        System.out.println("The text extracted from the OpenOffice document = " + TextBuffer.toString());
         return TextBuffer.toString();
     }
 
