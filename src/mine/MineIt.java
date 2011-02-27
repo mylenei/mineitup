@@ -80,7 +80,7 @@ public class MineIt {
     /** 
      * extract the contents to be written
      */
-    private boolean extract(int id, String path) {
+    private String extract(String path) {
         String content = "";
         boolean ok = false;
         if(path.endsWith(".doc") || path.endsWith(".docx")) {
@@ -104,14 +104,8 @@ public class MineIt {
         else if(path.startsWith("http")) {
             content = reader.readWebText(path);
         }
-        if(!content.equals("")) {
-            if(content.contains("'")){
-                content = content.replaceAll("'", "`");
-            }
-            storeContentsInDB(id, content);
-            ok = true;
-        }
-        return ok;
+        
+        return content;
     }
 
     /**
@@ -134,7 +128,13 @@ public class MineIt {
                 String path = rs.getString("path");
                 String content = rs.getString("extractedText");
                 if(content == null) {
-                    extract(id, path);
+                    String contentRead = extract(path);
+                    if(!contentRead.equals("")) {
+                        if(contentRead.contains("'")){
+                            contentRead = contentRead.replaceAll("'", "`");
+                        }
+                        storeContentsInDB(id, contentRead);
+                    }
                 }
                 else {
                     //check if equal ba sila, if not, update the value of extractedtext
@@ -163,6 +163,29 @@ public class MineIt {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
             Statement statement = conn.createStatement();
             String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path) VALUES('" + path + "')";
+            statement.executeUpdate(sql);
+            statement.close();
+            conn.close();
+            ok = true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ok;
+    }
+
+    public boolean addDataSource(String path) {
+        boolean ok = false;
+        Connection conn = null;
+        String content = this.extract(path);
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DBAccountInfo.DB_NAME, DBAccountInfo.USER_NAME, DBAccountInfo.PASSWORD);
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO " + DBAccountInfo.TABLE_NAME + "(path, content) VALUES('" + path + "','" + content + "')";
             statement.executeUpdate(sql);
             statement.close();
             conn.close();

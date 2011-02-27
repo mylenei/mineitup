@@ -1,0 +1,4 @@
+table_name="datasources"
+user_name="root"
+password=""
+db_name="mineitup"

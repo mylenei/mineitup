@@ -138,8 +138,6 @@ public class MineView extends FrameView {
         btnBack = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
         lblResults = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         lblSuggestions = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
@@ -209,13 +207,13 @@ public class MineView extends FrameView {
                         .addGap(270, 270, 270)
                         .addComponent(lblLogo))
                     .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addGap(523, 523, 523)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(headerPanelLayout.createSequentialGroup()
                         .addGap(408, 408, 408)
                         .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addGap(523, 523, 523)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(359, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
@@ -225,7 +223,7 @@ public class MineView extends FrameView {
                 .addComponent(lblLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
@@ -273,13 +271,6 @@ public class MineView extends FrameView {
         lblResults.setName("lblResults"); // NOI18N
         jToolBar1.add(lblResults);
 
-        jButton1.setFont(resourceMap.getFont("btnUpload.font")); // NOI18N
-        jButton1.setText(resourceMap.getString("btnUpload.text")); // NOI18N
-        jButton1.setName("btnUpload"); // NOI18N
-
-        jTextField1.setText(resourceMap.getString("txtUpload.text")); // NOI18N
-        jTextField1.setName("txtUpload"); // NOI18N
-
         javax.swing.GroupLayout resultPanelLayout = new javax.swing.GroupLayout(resultPanel);
         resultPanel.setLayout(resultPanelLayout);
         resultPanelLayout.setHorizontalGroup(
@@ -290,26 +281,13 @@ public class MineView extends FrameView {
                     .addGroup(resultPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1239, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addGroup(resultPanelLayout.createSequentialGroup()
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 775, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         resultPanelLayout.setVerticalGroup(
             resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultPanelLayout.createSequentialGroup()
-                .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(resultPanelLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(resultPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(resultPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(32, 32, 32)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addContainerGap())
@@ -567,8 +545,8 @@ public class MineView extends FrameView {
      * asks the user for a path to the data source and adds that data source to the DB
      */
     private void addDatasourceMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDatasourceMenuItemActionPerformed
-        String input = javax.swing.JOptionPane.showInputDialog(null, "Input the path to the datasource \n(MS Docs, PDF files, URL of a blog) \nyou want to add in the DB.");
-        mine.insertPath(input);
+        Filechooser choice = new Filechooser(this.getFrame(),true);
+        javax.swing.JOptionPane.showMessageDialog(null, choice.getPath());
     }//GEN-LAST:event_addDatasourceMenuItemActionPerformed
 
     /*
@@ -665,13 +643,11 @@ public class MineView extends FrameView {
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel headerPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblResults;
@@ -697,4 +673,5 @@ public class MineView extends FrameView {
     private int busyIconIndex = 0;
 
     private JDialog aboutBox;
+    private JDialog chooser;
 }
